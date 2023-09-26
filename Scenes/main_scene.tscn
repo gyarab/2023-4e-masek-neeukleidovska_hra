@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://clsmjs4syp6iy"]
-
-[node name="Main" type="Node3D"]
-
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(7.68557, 0, 0, 0, 0.234437, 0, 0, 0, 6.43012, 0, 0, 0)
