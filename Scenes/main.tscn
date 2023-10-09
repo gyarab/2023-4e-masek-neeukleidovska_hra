@@ -1,28 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://d4dbhgbhrt4c4"]
+[gd_scene load_steps=4 format=3 uid="uid://d4dbhgbhrt4c4"]
 
 [ext_resource type="Script" path="res://Scripts/character_controller.cs" id="1_tmxe7"]
-[ext_resource type="Texture2D" uid="uid://bu0sxhubqq830" path="res://Textures/floor_tiles_08_4k/floor_tiles_08_diff_4k.png" id="2_8740d"]
-[ext_resource type="Texture2D" uid="uid://b2nvs58a1kega" path="res://Textures/floor_tiles_08_4k/floor_tiles_08_ao_4k.png" id="3_88gd0"]
-[ext_resource type="Texture2D" uid="uid://d3afkfj8ymc65" path="res://Textures/floor_tiles_08_4k/floor_tiles_08_nor_dx_4k.png" id="4_61wkd"]
-[ext_resource type="Texture2D" uid="uid://c4wtfkjxeil8n" path="res://Textures/floor_tiles_08_4k/floor_tiles_08_rough_4k.png" id="5_rynto"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_woxv6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_55fie"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_80dnf"]
-albedo_texture = ExtResource("2_8740d")
-roughness_texture = ExtResource("5_rynto")
-normal_enabled = true
-normal_texture = ExtResource("4_61wkd")
-ao_enabled = true
-ao_texture = ExtResource("3_88gd0")
-uv1_scale = Vector3(5, 5, 5)
-
 [node name="Root" type="Node3D"]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0.347482)
 script = ExtResource("1_tmxe7")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
@@ -36,14 +23,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D/CameraRig"]
 
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(11.97, 0, 0, 0, 0.2, 0, 0, 0, 11.52, 0, -0.1, 0)
-use_collision = true
-material = SubResource("StandardMaterial3D_80dnf")
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="."]
-transform = Transform3D(4.3016, 0, 0, 0, 0.167383, -6.30524, 0, 0.109466, 9.64129, 3.66317, 1.65536, -4.43498)
-use_collision = true
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+use_collision = true
+size = Vector3(7.6, 0.2, 2.3)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.4, 0, 4.25)
+use_collision = true
+size = Vector3(6.2, 0.2, 2.8)
