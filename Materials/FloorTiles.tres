@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://nr0xsyyqn6w2"]
+
+[ext_resource type="Texture2D" uid="uid://clrf4hln8es7w" path="res://Textures/TilesCeramicSquareLarge001/TilesCeramicSquareLarge001_COL_2K.jpg" id="1_7f1em"]
+[ext_resource type="Texture2D" uid="uid://dq8v2u0mlg664" path="res://Textures/TilesCeramicSquareLarge001/TilesCeramicSquareLarge001_DISP_2K.jpg" id="2_y3sjf"]
+[ext_resource type="Texture2D" uid="uid://utqg2uy53ojd" path="res://Textures/TilesCeramicSquareLarge001/TilesCeramicSquareLarge001_NRM_2K.jpg" id="3_y2kyc"]
+[ext_resource type="Texture2D" uid="uid://hvyync6nb7wf" path="res://Textures/TilesCeramicSquareLarge001/TilesCeramicSquareLarge001_ROUGH_2K.png" id="4_m17hr"]
+
+[resource]
+albedo_texture = ExtResource("1_7f1em")
+roughness_texture = ExtResource("4_m17hr")
+roughness_texture_channel = 4
+normal_enabled = true
+normal_texture = ExtResource("3_y2kyc")
+heightmap_texture = ExtResource("2_y3sjf")
+uv1_scale = Vector3(0.69, 0.69, 0.69)
+uv1_offset = Vector3(-0.395, 0, -0.139)
+uv1_triplanar = true
