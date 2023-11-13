@@ -7,36 +7,99 @@ public partial class character_controller : CharacterBody3D
 	public const float Speed = 5.0f;
 	public const float JumpVelocity = 4.5f;
 
-	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
 	public override void _PhysicsProcess(double delta)
 	{
 		Vector3 velocity = Velocity;
 
-		// Add the gravity.
-		if (!IsOnFloor())
-			velocity.Y -= gravity * (float)delta;
-
-		// Handle Jump.
-		if (Input.IsActionJustPressed("ui_jump") && IsOnFloor()) {
-			velocity.Y = JumpVelocity;
-		}
-
-		// Get the input direction and handle the movement/deceleration.
-		// As good practice, you should replace UI actions with custom gameplay actions.
-		Vector2 inputDir = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-		Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-		if (direction != Vector3.Zero)
+		//GD.Print(GetNode<Node3D>("CameraRig").RotationDegrees.X);
+		if (GetNode<Node3D>("CameraRig").RotationDegrees.X <= 90 && GetNode<Node3D>("CameraRig").RotationDegrees.X >= -90)
 		{
-			velocity.X = direction.X * Speed;
-			velocity.Z = direction.Z * Speed;
+			//Camera position
+			GetNode<Node3D>("CameraRig").Position = new Vector3(GetNode<Node3D>("CameraRig").Position.X,Mathf.MoveToward(GetNode<Node3D>("CameraRig").Position.Y, 0.5f, 0.03f), GetNode<Node3D>("CameraRig").Position.Z);
+
+			//Item gravity
+			PhysicsServer3D.AreaSetParam(GetWorld3D().Space, PhysicsServer3D.AreaParameter.Gravity, 9.8);
+
+			//Player gravity
+			gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+			if (!IsOnFloor()) velocity.Y -= gravity * (float)delta;
+
+			// Jump
+			if (Input.IsActionJustPressed("ui_jump") && IsOnFloor())
+			{
+				velocity.Y = JumpVelocity;
+			}
+
+			// Input direction
+			Vector2 inputDir = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+			Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+			if (IsOnFloor())
+			{
+				if (direction != Vector3.Zero)
+				{
+					velocity.X = direction.X * Speed;
+					velocity.Z = direction.Z * Speed;
+				}
+				else
+				{
+					velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+					velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+				}
+			}
+			else if (direction != Vector3.Zero)
+			{
+				velocity.X = Mathf.MoveToward(Velocity.X, direction.X * Speed, Speed / 20);
+				velocity.Z = Mathf.MoveToward(Velocity.Z, direction.Z * Speed, Speed / 20);
+			}
 		}
 		else
 		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-			velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+			//Camera position
+			GetNode<Node3D>("CameraRig").Position = new Vector3(GetNode<Node3D>("CameraRig").Position.X,Mathf.MoveToward(GetNode<Node3D>("CameraRig").Position.Y, -0.5f, 0.03f), GetNode<Node3D>("CameraRig").Position.Z);
+
+			//Item gravity
+			PhysicsServer3D.AreaSetParam(GetWorld3D().Space, PhysicsServer3D.AreaParameter.Gravity, -9.8);
+
+			//Player gravity
+			gravity = -ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+			if (!IsOnCeiling()) velocity.Y -= gravity * (float)delta;
+
+			// Jump
+			if (Input.IsActionJustPressed("ui_jump") && IsOnCeiling())
+			{
+				velocity.Y = -JumpVelocity;
+			}
+
+			// Input direction
+			Vector2 inputDir = Input.GetVector("ui_right", "ui_left", "ui_up", "ui_down");
+			Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+			if (IsOnCeiling())
+			{
+				if (direction != Vector3.Zero)
+				{
+					velocity.X = direction.X * Speed;
+					velocity.Z = direction.Z * Speed;
+					velocity.X = -velocity.X;
+					velocity.Z = -velocity.Z;
+				}
+				else
+				{
+					velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+					velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+				}
+			}
+			else if (direction != Vector3.Zero)
+			{
+				velocity.X = Mathf.MoveToward(Velocity.X, -direction.X * Speed, Speed / 20);
+				velocity.Z = Mathf.MoveToward(Velocity.Z, -direction.Z * Speed, Speed / 20);
+			}
 		}
+
+
+
+
 
 		Velocity = velocity;
 		MoveAndSlide();
@@ -45,25 +108,28 @@ public partial class character_controller : CharacterBody3D
 		}*/
 	}
 
-	public override void _Input(InputEvent @event) {
+	public override void _Input(InputEvent @event)
+	{
 		if (@event is InputEventMouseMotion mouseEvent)
-        {
-            Vector2 mouseDelta = mouseEvent.Relative;
-            float rotationSpeed = 0.006f;
-            RotateObjectLocal(Vector3.Up, -mouseDelta.X * rotationSpeed);
-            GetNode<Node3D>("CameraRig").Rotate(Vector3.Right, -mouseDelta.Y * rotationSpeed);
-            float maxPitch = 80.0f;
-            float minPitch = -80.0f;
-            //var rotationDegrees = RotationDegrees;
-            RotationDegrees = new Vector3(Mathf.Clamp(RotationDegrees.X, minPitch, maxPitch), RotationDegrees.Y, RotationDegrees.Z);
-            //RotationDegrees = rotationDegrees;
-            previousMousePosition = mouseEvent.Position;
-        }
+		{
+			Vector2 mouseDelta = mouseEvent.Relative;
+			float rotationSpeedX;
+			float rotationSpeedY = 0.006f;
+			if (GetNode<Node3D>("CameraRig").RotationDegrees.X <= 90 && GetNode<Node3D>("CameraRig").RotationDegrees.X >= -90) rotationSpeedX = 0.006f;
+			else rotationSpeedX = -0.006f;
+			RotateObjectLocal(Vector3.Up, -mouseDelta.X * rotationSpeedX);
+			GetNode<Node3D>("CameraRig").Rotate(Vector3.Right, -mouseDelta.Y * rotationSpeedY);
+			//RotateObjectLocal(Vector3.Right, -mouseDelta.Y * rotationSpeedY);
+			//float maxPitch = 80.0f;
+			//float minPitch = -80.0f;
+			//RotationDegrees = new Vector3(Mathf.Clamp(RotationDegrees.X, minPitch, maxPitch), RotationDegrees.Y, RotationDegrees.Z);
+			previousMousePosition = mouseEvent.Position;
+		}
 	}
 
-    public override void _Ready()
-    {
-        Input.MouseMode = Input.MouseModeEnum.Captured;
+	public override void _Ready()
+	{
+		Input.MouseMode = Input.MouseModeEnum.Captured;
 		DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
-    }
+	}
 }
