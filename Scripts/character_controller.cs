@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using System;
 
 public partial class character_controller : CharacterBody3D
@@ -96,13 +97,9 @@ public partial class character_controller : CharacterBody3D
 				velocity.Z = Mathf.MoveToward(Velocity.Z, -direction.Z * Speed, Speed / 20);
 			}
 		}
-
-
-
-
-
 		Velocity = velocity;
 		MoveAndSlide();
+		//PerspectiveRaycast();
 		/*if (Position.Z < 0 && Position.Y < 5) {
 			Position = new Vector3(Position.X, Position.Y + 10, Position.Z);
 		}*/
@@ -126,6 +123,11 @@ public partial class character_controller : CharacterBody3D
 			previousMousePosition = mouseEvent.Position;
 		}
 	}
+	
+	/*void PerspectiveRaycast() {
+		Dictionary result = GetWorld3D().DirectSpaceState.IntersectRay(PhysicsRayQueryParameters3D.Create(Vector3.Zero, Vector3.Forward));
+		GD.Print(result["collider"]);
+	}*/
 
 	public override void _Ready()
 	{

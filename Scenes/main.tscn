@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://d4dbhgbhrt4c4"]
+[gd_scene load_steps=18 format=3 uid="uid://d4dbhgbhrt4c4"]
 
 [ext_resource type="Script" path="res://Scripts/character_controller.cs" id="1_tmxe7"]
 [ext_resource type="Material" uid="uid://nr0xsyyqn6w2" path="res://Materials/FloorTiles.tres" id="2_1isuc"]
+[ext_resource type="Script" path="res://Scripts/perspective_raycast.cs" id="2_dtfki"]
 [ext_resource type="Material" uid="uid://c8j2oiklysfts" path="res://Materials/WallBottom.tres" id="3_4qepj"]
 [ext_resource type="Texture2D" uid="uid://bdtb1t370sxou" path="res://Textures/20231012_165514.jpg" id="3_36shl"]
 [ext_resource type="Material" uid="uid://cint7hi57glky" path="res://Materials/WallTop.tres" id="4_kgip0"]
@@ -56,6 +57,11 @@ shape = SubResource("CapsuleShape3D_55fie")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D/CameraRig"]
+
+[node name="RayCast3D" type="RayCast3D" parent="CharacterBody3D/CameraRig"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0, -1000, 0)
+script = ExtResource("2_dtfki")
 
 [node name="Floor1" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 0, 0)
@@ -297,14 +303,17 @@ radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
 
-[node name="RigidBody3D" type="RigidBody3D" parent="."]
-transform = Transform3D(0.879532, 0, -0.475839, -0.29037, 0.792226, -0.536715, 0.376972, 0.610228, 0.696788, 2.20816, 1.66323, 0)
+[node name="Cube" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.20816, 1.66323, 0)
+max_contacts_reported = 1
+contact_monitor = true
 can_sleep = false
+lock_rotation = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube"]
 shape = SubResource("BoxShape3D_5sask")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="RigidBody3D"]
+[node name="CSGBox3D" type="CSGBox3D" parent="Cube"]
 
 [node name="Ceil1" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 3.4, 0)
