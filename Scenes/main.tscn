@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://d4dbhgbhrt4c4"]
+[gd_scene load_steps=22 format=3 uid="uid://d4dbhgbhrt4c4"]
 
 [ext_resource type="Script" path="res://Scripts/character_controller.cs" id="1_tmxe7"]
 [ext_resource type="Material" uid="uid://nr0xsyyqn6w2" path="res://Materials/FloorTiles.tres" id="2_1isuc"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://hvyync6nb7wf" path="res://Textures/TilesCeramicSquareLarge001/TilesCeramicSquareLarge001_ROUGH_2K.png" id="6_coriv"]
 [ext_resource type="Material" uid="uid://q62kui11tr7i" path="res://Materials/glass.tres" id="6_i74ir"]
 [ext_resource type="Material" uid="uid://bdf4tokexr7ap" path="res://Materials/red.tres" id="7_tf24y"]
+[ext_resource type="Script" path="res://Scripts/movable.cs" id="13_441wx"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_woxv6"]
 radius = 0.25
@@ -39,6 +40,15 @@ metallic = 1.0
 roughness = 0.5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5sask"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ql37"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3knxu"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d4vqs"]
+albedo_color = Color(0, 0, 1, 1)
 
 [node name="Root" type="Node3D"]
 
@@ -305,10 +315,9 @@ material = SubResource("StandardMaterial3D_3qjxn")
 
 [node name="Cube" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.20816, 1.66323, 0)
-max_contacts_reported = 1
-contact_monitor = true
 can_sleep = false
 lock_rotation = true
+script = ExtResource("13_441wx")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cube"]
 shape = SubResource("BoxShape3D_5sask")
@@ -348,3 +357,18 @@ light_energy = 0.5
 [node name="DirectionalLight3D5" type="DirectionalLight3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 6.06563, 4.34222)
 light_energy = 0.5
+
+[node name="pointer1" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.44438, 0.289823, 0)
+material_override = SubResource("StandardMaterial3D_5ql37")
+radius = 0.05
+
+[node name="pointer2" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.88876, 0.579646, 0)
+material_override = SubResource("StandardMaterial3D_3knxu")
+radius = 1.332
+
+[node name="pointer3" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.3331, 0.86947, 0)
+material_override = SubResource("StandardMaterial3D_d4vqs")
+radius = 0.05
