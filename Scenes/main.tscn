@@ -53,7 +53,9 @@ albedo_color = Color(0, 0, 1, 1)
 [node name="Root" type="Node3D"]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.347)
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 1, 0)
+collision_layer = 64
+collision_mask = 64
 slide_on_ceiling = false
 script = ExtResource("1_tmxe7")
 
@@ -68,26 +70,48 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D/CameraRig"]
 
-[node name="RayCast3D" type="RayCast3D" parent="CharacterBody3D/CameraRig"]
+[node name="RayCastCenter" type="RayCast3D" parent="CharacterBody3D/CameraRig"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 target_position = Vector3(0, -1000, 0)
 script = ExtResource("2_dtfki")
 
+[node name="RayCastTopLeft" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
+transform = Transform3D(0.984808, 0.173648, 1.72028e-07, -0.17085, 0.968938, -0.178802, -0.0310489, 0.176086, 0.983885, 0, 0, 0)
+target_position = Vector3(0, -1000, 0)
+
+[node name="RayCastTopRight" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
+transform = Transform3D(0.984808, -0.173648, 0, 0.17085, 0.968938, -0.178802, 0.0310487, 0.176086, 0.983885, 0, 0, 0)
+target_position = Vector3(0, -1000, 0)
+
+[node name="RayCastBotLeft" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
+transform = Transform3D(0.984808, 0.173648, 0, -0.17085, 0.968938, 0.178802, 0.0310487, -0.176086, 0.983885, 0, 0, 0)
+target_position = Vector3(0, -1000, 0)
+
+[node name="RayCastBotRight" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
+transform = Transform3D(0.984808, -0.173648, 0, 0.17085, 0.968938, 0.178802, -0.0310487, -0.176086, 0.983885, 0, 0, 0)
+target_position = Vector3(0, -1000, 0)
+
 [node name="Floor1" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 0, 0)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(4.8, 0.2, 2.3)
 material = ExtResource("2_1isuc")
 
 [node name="Floor2" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.4, 0, 3.35)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(9, 0.2, 2.8)
 material = SubResource("StandardMaterial3D_j2ydr")
 
 [node name="Wall1" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 3.9, 0.85, 0.1)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(1.5, 0.2, 2.5)
 material = ExtResource("3_4qepj")
 
@@ -100,6 +124,8 @@ material = ExtResource("4_kgip0")
 [node name="Wall2" type="CSGBox3D" parent="."]
 transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, -1.3, 0.85, -1.25)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(1.5, 0.2, 5)
 material = ExtResource("3_4qepj")
 
@@ -112,6 +138,8 @@ material = ExtResource("4_kgip0")
 [node name="Wall3" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 3.9, 0.85, 2.45)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(1.5, 0.2, 0.4)
 material = ExtResource("3_4qepj")
 
@@ -124,6 +152,8 @@ material = ExtResource("4_kgip0")
 [node name="Wall4" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 3.9, 0.85, 4.125)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(1.5, 0.2, 1.15)
 material = ExtResource("3_4qepj")
 
@@ -136,6 +166,8 @@ material = ExtResource("4_kgip0")
 [node name="Wall5" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 3.9, 0.85, 5.65)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(1.5, 0.2, 0.3)
 material = ExtResource("3_4qepj")
 
@@ -148,6 +180,8 @@ material = ExtResource("4_kgip0")
 [node name="Wall6" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 3.9, 0.85, 7.225)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(1.5, 0.2, 1.25)
 material = ExtResource("3_4qepj")
 
@@ -160,6 +194,8 @@ material = ExtResource("4_kgip0")
 [node name="Wall7" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1, 0.85, 7.65)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(1.5, 0.4, 0.4)
 material = ExtResource("3_4qepj")
 
@@ -182,6 +218,8 @@ surface_material_override/17 = ExtResource("7_tf24y")
 transform = Transform3D(83, 0, 0, 0, 83, 0, 0, 0, 83, 21.726, 104.824, 3.42834)
 visible = false
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(3, 3, 0.2)
 
 [node name="DoubleDoor2" type="MeshInstance3D" parent="."]
@@ -192,11 +230,15 @@ mesh = ExtResource("5_fw3i1")
 transform = Transform3D(83, 0, 0, 0, 83, 0, 0, 0, 83, 21.726, 104.824, 3.42834)
 visible = false
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(3, 3, 0.2)
 
 [node name="Wall8" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.9, 0.85, 2.5)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(1.5, 0.2, 2.7)
 material = ExtResource("3_4qepj")
 
@@ -211,6 +253,8 @@ material = ExtResource("4_kgip0")
 [node name="Bar1" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 4.075)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -218,6 +262,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar2" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 4.3)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -225,6 +271,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar3" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 4.525)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -232,6 +280,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar4" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 4.75)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -239,6 +289,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar5" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 4.975)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -246,6 +298,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar6" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 5.2)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -253,6 +307,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar7" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 5.425)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -260,6 +316,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar8" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 5.65)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -267,6 +325,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar9" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 5.875)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -274,6 +334,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar10" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 6.1)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -281,6 +343,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar11" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 6.325)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -288,6 +352,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar12" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 6.55)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -295,6 +361,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar13" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 6.775)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -302,6 +370,8 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar14" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 7)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
@@ -309,12 +379,15 @@ material = SubResource("StandardMaterial3D_3qjxn")
 [node name="Bar15" type="CSGCylinder3D" parent="Bars"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1, 7.225)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 radius = 0.02
 height = 5.0
 material = SubResource("StandardMaterial3D_3qjxn")
 
 [node name="Cube" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.20816, 1.66323, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.29143, 1.5, 0)
+collision_layer = 2
 can_sleep = false
 lock_rotation = true
 script = ExtResource("13_441wx")
@@ -323,16 +396,21 @@ script = ExtResource("13_441wx")
 shape = SubResource("BoxShape3D_5sask")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Cube"]
+transform = Transform3D(1.03, 0, 0, 0, 1.03, 0, 0, 0, 1.03, 0, 0, 0)
 
 [node name="Ceil1" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 3.4, 0)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(4.8, 0.2, 2.3)
 material = ExtResource("4_kgip0")
 
 [node name="Ceil2" type="CSGBox3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.4, 3.4, 3.35)
 use_collision = true
+collision_layer = 65
+collision_mask = 65
 size = Vector3(9, 0.2, 2.8)
 material = ExtResource("4_kgip0")
 
