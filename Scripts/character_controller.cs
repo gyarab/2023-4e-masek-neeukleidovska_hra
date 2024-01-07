@@ -57,7 +57,7 @@ public partial class character_controller : CharacterBody3D
 		}
 		else
 		{
-			//Camera position
+			/*//Camera position
 			GetNode<Node3D>("CameraRig").Position = new Vector3(GetNode<Node3D>("CameraRig").Position.X,Mathf.MoveToward(GetNode<Node3D>("CameraRig").Position.Y, -0.5f, 0.03f), GetNode<Node3D>("CameraRig").Position.Z);
 
 			//Item gravity
@@ -95,7 +95,7 @@ public partial class character_controller : CharacterBody3D
 			{
 				velocity.X = Mathf.MoveToward(Velocity.X, -direction.X * Speed, Speed / 20);
 				velocity.Z = Mathf.MoveToward(Velocity.Z, -direction.Z * Speed, Speed / 20);
-			}
+			}*/
 		}
 		Velocity = velocity;
 		MoveAndSlide();
@@ -110,12 +110,21 @@ public partial class character_controller : CharacterBody3D
 		if (@event is InputEventMouseMotion mouseEvent)
 		{
 			Vector2 mouseDelta = mouseEvent.Relative;
-			float rotationSpeedX;
+			float rotationSpeedX = 0.006f;
 			float rotationSpeedY = 0.006f;
-			if (GetNode<Node3D>("CameraRig").RotationDegrees.X <= 90 && GetNode<Node3D>("CameraRig").RotationDegrees.X >= -90) rotationSpeedX = 0.006f;
-			else rotationSpeedX = -0.006f;
+			//if (GetNode<Node3D>("CameraRig").RotationDegrees.X <= 90 && GetNode<Node3D>("CameraRig").RotationDegrees.X >= -90) rotationSpeedX = 0.006f;
+			//else rotationSpeedX = -0.006f;
 			RotateObjectLocal(Vector3.Up, -mouseDelta.X * rotationSpeedX);
 			GetNode<Node3D>("CameraRig").Rotate(Vector3.Right, -mouseDelta.Y * rotationSpeedY);
+			if (GetNode<Node3D>("CameraRig").RotationDegrees.X > 90) {
+				Vector3 rd = GetNode<Node3D>("CameraRig").RotationDegrees;
+				rd.X = 90;
+				GetNode<Node3D>("CameraRig").RotationDegrees = rd;
+			} else if (GetNode<Node3D>("CameraRig").RotationDegrees.X < -90) {
+				Vector3 rd = GetNode<Node3D>("CameraRig").RotationDegrees;
+				rd.X = -90;
+				GetNode<Node3D>("CameraRig").RotationDegrees = rd;
+			}
 			//RotateObjectLocal(Vector3.Right, -mouseDelta.Y * rotationSpeedY);
 			//float maxPitch = 80.0f;
 			//float minPitch = -80.0f;

@@ -24,6 +24,9 @@ public partial class perspective_raycast : RayCast3D
 			GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastBotRight").AddException(toCarry);
 			var box = toCarry.GetNode<CsgBox3D>("CSGBox3D");
 			mult = Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / toCarry.GlobalPosition.DistanceTo(GlobalPosition);
+			toCarry.SetCollisionLayerValue(7, false);
+			toCarry.SetCollisionLayerValue(8, true);
+			//toCarry.SetCollisionMaskValue(8, true);
 		}
 		else
 		{
@@ -32,6 +35,9 @@ public partial class perspective_raycast : RayCast3D
 			GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastBotLeft").ClearExceptions();
 			GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastBotRight").ClearExceptions();
 			ClearExceptions();
+			toCarry.SetCollisionLayerValue(7, true);
+			toCarry.SetCollisionLayerValue(8, false);
+			//toCarry.SetCollisionMaskValue(8, false);
 		}
 	}
 
@@ -41,6 +47,7 @@ public partial class perspective_raycast : RayCast3D
 		{
 			if (carry)
 			{
+				//GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D) GD.Load("res://Textures/hand.png");
 				var spaceState = GetWorld3D().DirectSpaceState;
 				var topLeft = GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastTopLeft");
 				var topRight = GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastTopRight");
@@ -84,8 +91,17 @@ public partial class perspective_raycast : RayCast3D
 			}
 			else
 			{
-
+				try
+				{
+					RigidBody3D coll = (RigidBody3D)GetCollider();
+					GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D) GD.Load("res://Textures/hand.png");
+				} catch {
+					GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D) GD.Load("res://Textures/dot.png");
+				}
 			}
+		}
+		else if (!carry) {
+			GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D) GD.Load("res://Textures/dot.png");
 		}
 	}
 
@@ -95,11 +111,24 @@ public partial class perspective_raycast : RayCast3D
 		{
 			if (carry)
 			{
-				carry = false;
-				toCarry.Freeze = false;
-				Except(false);
+				bool inPlayer = false;
+				foreach (Node3D collBod in toCarry.GetCollidingBodies())
+				{
+					if (collBod.Name.Equals("CharacterBody3D"))
+					{
+						inPlayer = true;
+						break;
+					}
+				}
+				if (!inPlayer)
+				{
+					carry = false;
+					toCarry.Freeze = false;
+					Except(false);
+					toCarry.ContactMonitor = false;
+				}
 			}
-			if (IsColliding())
+			else if (IsColliding())
 			{
 				try
 				{
@@ -108,6 +137,8 @@ public partial class perspective_raycast : RayCast3D
 					toCarry.Freeze = true;
 					Except(true);
 					carry = true;
+					toCarry.ContactMonitor = true;
+					GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D) GD.Load("res://Textures/hand_hold.png");
 				}
 				catch
 				{
