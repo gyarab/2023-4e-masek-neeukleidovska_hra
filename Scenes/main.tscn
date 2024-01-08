@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://d4dbhgbhrt4c4"]
+[gd_scene load_steps=24 format=3 uid="uid://d4dbhgbhrt4c4"]
 
 [ext_resource type="Script" path="res://Scripts/character_controller.cs" id="1_tmxe7"]
 [ext_resource type="Material" uid="uid://nr0xsyyqn6w2" path="res://Materials/FloorTiles.tres" id="2_1isuc"]
@@ -13,6 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://hvyync6nb7wf" path="res://Textures/TilesCeramicSquareLarge001/TilesCeramicSquareLarge001_ROUGH_2K.png" id="6_coriv"]
 [ext_resource type="Material" uid="uid://q62kui11tr7i" path="res://Materials/glass.tres" id="6_i74ir"]
 [ext_resource type="Material" uid="uid://bdf4tokexr7ap" path="res://Materials/red.tres" id="7_tf24y"]
+[ext_resource type="Shader" path="res://Textures/portal_shader.gdshader" id="14_fr4ip"]
+[ext_resource type="Texture2D" uid="uid://bjje3ao056j1y" path="res://Textures/portal_test.tres" id="15_smst0"]
+[ext_resource type="Script" path="res://Scripts/portal.cs" id="16_lgiut"]
+[ext_resource type="Script" path="res://Scripts/sub_portal.cs" id="17_077wa"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_woxv6"]
 radius = 0.25
@@ -41,6 +45,12 @@ roughness = 0.5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5sask"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1ch1t"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("14_fr4ip")
+shader_parameter/viewport_texture = ExtResource("15_smst0")
+
 [node name="Root" type="Node3D"]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
@@ -60,9 +70,10 @@ shape = SubResource("CapsuleShape3D_55fie")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D/CameraRig"]
+near = 0.001
 
 [node name="Crosshair" type="Sprite3D" parent="CharacterBody3D/CameraRig/Camera3D"]
-transform = Transform3D(0.011041, 0, 0, 0, 0.011041, 0, 1.38778e-17, 0, 1, 2.9882e-09, 0, -0.250584)
+transform = Transform3D(0.0005, 0, -4.44089e-16, 0, 0.0005, 0, 4.33681e-19, 0, 0.5, 0, 0, -0.007)
 modulate = Color(0.984314, 0.956863, 0.929412, 0.631373)
 texture = ExtResource("2_kda8b")
 
@@ -73,19 +84,19 @@ collision_mask = 3
 script = ExtResource("2_dtfki")
 
 [node name="RayCastTopLeft" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
-transform = Transform3D(0.984808, 0.173648, 1.72028e-07, -0.17085, 0.968938, -0.178802, -0.0310489, 0.176086, 0.983885, 0, 0, 0)
+transform = Transform3D(0.984808, 0.173648, 0, -0.17101, 0.969847, -0.173648, -0.0301537, 0.17101, 0.984808, 0, 0, 0)
 target_position = Vector3(0, -1000, 0)
 
 [node name="RayCastTopRight" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
-transform = Transform3D(0.984808, -0.173648, 0, 0.17085, 0.968938, -0.178802, 0.0310487, 0.176086, 0.983885, 0, 0, 0)
+transform = Transform3D(0.984808, -0.173648, 0, 0.17101, 0.969847, -0.173648, 0.0301537, 0.17101, 0.984808, 0, 0, 0)
 target_position = Vector3(0, -1000, 0)
 
 [node name="RayCastBotLeft" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
-transform = Transform3D(0.984808, 0.173648, 0, -0.17085, 0.968938, 0.178802, 0.0310487, -0.176086, 0.983885, 0, 0, 0)
+transform = Transform3D(0.984808, 0.173648, 0, -0.17101, 0.969847, 0.173648, 0.0301537, -0.17101, 0.984808, 0, 0, 0)
 target_position = Vector3(0, -1000, 0)
 
 [node name="RayCastBotRight" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
-transform = Transform3D(0.984808, -0.173648, 0, 0.17085, 0.968938, 0.178802, -0.0310487, -0.176086, 0.983885, 0, 0, 0)
+transform = Transform3D(0.984808, -0.173648, 0, 0.17101, 0.969847, 0.173648, -0.0301537, -0.17101, 0.984808, 0, 0, 0)
 target_position = Vector3(0, -1000, 0)
 
 [node name="StopBlock" type="CSGBox3D" parent="CharacterBody3D"]
@@ -113,11 +124,11 @@ size = Vector3(4.8, 0.2, 2.3)
 material = ExtResource("2_1isuc")
 
 [node name="Floor2" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.4, 0, 3.35)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 0, 3.35)
 use_collision = true
 collision_layer = 65
 collision_mask = 65
-size = Vector3(9, 0.2, 2.8)
+size = Vector3(9, 0.2, 3)
 material = SubResource("StandardMaterial3D_j2ydr")
 
 [node name="OpenWall" type="CSGBox3D" parent="."]
@@ -445,12 +456,68 @@ size = Vector3(4.8, 0.2, 2.3)
 material = ExtResource("4_kgip0")
 
 [node name="Ceil2" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.4, 3.4, 3.35)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 3.4, 3.35)
 use_collision = true
 collision_layer = 65
 collision_mask = 65
-size = Vector3(9, 0.2, 2.8)
+size = Vector3(9, 0.2, 3)
 material = ExtResource("4_kgip0")
+
+[node name="Portal" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.699, 3.1)
+layers = 512
+size = Vector3(0.2, 3.2, 0.9)
+material = SubResource("ShaderMaterial_1ch1t")
+script = ExtResource("16_lgiut")
+
+[node name="SubViewport" type="SubViewport" parent="Portal"]
+size = Vector2i(1920, 1080)
+
+[node name="Camera3D" type="Camera3D" parent="Portal/SubViewport"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.9, 1.699, 1.8)
+cull_mask = 1048063
+
+[node name="SubPortal" type="CSGBox3D" parent="Portal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, 0)
+layers = 512
+size = Vector3(0.2, 3.2, 0.9)
+material = SubResource("ShaderMaterial_1ch1t")
+script = ExtResource("17_077wa")
+
+[node name="SubViewport" type="SubViewport" parent="Portal/SubPortal"]
+size = Vector2i(1920, 1080)
+
+[node name="Camera3D" type="Camera3D" parent="Portal/SubPortal/SubViewport"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.9, 1.699, 1.8)
+cull_mask = 1048063
+
+[node name="Portal2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.699, 1.8)
+layers = 512
+size = Vector3(0.2, 3.2, 0.9)
+material = SubResource("ShaderMaterial_1ch1t")
+script = ExtResource("16_lgiut")
+
+[node name="SubViewport" type="SubViewport" parent="Portal2"]
+size = Vector2i(1920, 1080)
+
+[node name="Camera3D" type="Camera3D" parent="Portal2/SubViewport"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.9, 1.699, 3.1)
+cull_mask = 1048063
+
+[node name="SubPortal" type="CSGBox3D" parent="Portal2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, 0)
+layers = 512
+size = Vector3(0.2, 3.2, 0.9)
+material = SubResource("ShaderMaterial_1ch1t")
+script = ExtResource("17_077wa")
+
+[node name="SubViewport" type="SubViewport" parent="Portal2/SubPortal"]
+size = Vector2i(1920, 1080)
+
+[node name="Camera3D" type="Camera3D" parent="Portal2/SubPortal/SubViewport"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.9, 1.699, 3.1)
+cull_mask = 1048063
 
 [node name="Node3D" type="Node3D" parent="."]
 

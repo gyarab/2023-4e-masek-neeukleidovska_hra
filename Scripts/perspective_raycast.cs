@@ -18,15 +18,24 @@ public partial class perspective_raycast : RayCast3D
 		if (exc)
 		{
 			AddException(toCarry);
-			GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastTopLeft").AddException(toCarry);
-			GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastTopRight").AddException(toCarry);
-			GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastBotLeft").AddException(toCarry);
-			GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastBotRight").AddException(toCarry);
+			var topLeft = GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastTopLeft");
+			var topRight = GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastTopRight");
+			var botLeft = GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastBotLeft");
+			var botRight = GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastBotRight");
+			topLeft.AddException(toCarry);
+			topRight.AddException(toCarry);
+			botLeft.AddException(toCarry);
+			botRight.AddException(toCarry);
 			var box = toCarry.GetNode<CsgBox3D>("CSGBox3D");
+			double xDeg = Math.Tan(box.Scale.Y / 2 / (toCarry.GlobalPosition.DistanceTo(GlobalPosition) - box.Scale.Y / 2)) * (180 / Math.PI);
+			double zDeg = Math.Tan(box.Scale.X / 2 / (toCarry.GlobalPosition.DistanceTo(GlobalPosition) - box.Scale.X / 2)) * (180 / Math.PI);
+			topLeft.RotationDegrees = new Vector3((float)xDeg, 0, (float)-zDeg);
+			topRight.RotationDegrees = new Vector3((float)xDeg, 0, (float)zDeg);
+			botLeft.RotationDegrees = new Vector3((float)-xDeg, 0, (float)-zDeg);
+			botRight.RotationDegrees = new Vector3((float)-xDeg, 0, (float)zDeg);
 			mult = Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / toCarry.GlobalPosition.DistanceTo(GlobalPosition);
 			toCarry.SetCollisionLayerValue(7, false);
 			toCarry.SetCollisionLayerValue(8, true);
-			//toCarry.SetCollisionMaskValue(8, true);
 		}
 		else
 		{
@@ -37,7 +46,6 @@ public partial class perspective_raycast : RayCast3D
 			ClearExceptions();
 			toCarry.SetCollisionLayerValue(7, true);
 			toCarry.SetCollisionLayerValue(8, false);
-			//toCarry.SetCollisionMaskValue(8, false);
 		}
 	}
 
@@ -94,14 +102,17 @@ public partial class perspective_raycast : RayCast3D
 				try
 				{
 					RigidBody3D coll = (RigidBody3D)GetCollider();
-					GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D) GD.Load("res://Textures/hand.png");
-				} catch {
-					GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D) GD.Load("res://Textures/dot.png");
+					GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand.png");
+				}
+				catch
+				{
+					GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
 				}
 			}
 		}
-		else if (!carry) {
-			GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D) GD.Load("res://Textures/dot.png");
+		else if (!carry)
+		{
+			GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
 		}
 	}
 
@@ -138,7 +149,7 @@ public partial class perspective_raycast : RayCast3D
 					Except(true);
 					carry = true;
 					toCarry.ContactMonitor = true;
-					GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D) GD.Load("res://Textures/hand_hold.png");
+					GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
 				}
 				catch
 				{
