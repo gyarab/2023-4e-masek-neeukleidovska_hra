@@ -6,7 +6,8 @@ public partial class perspective_raycast : RayCast3D
 	bool carry = false;
 	Vector3 norm;
 	float mult;
-	RigidBody3D toCarry;
+	RigidBody3D toCarry = new RigidBody3D();
+	RayCast3D after;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -56,7 +57,6 @@ public partial class perspective_raycast : RayCast3D
 			if (carry)
 			{
 				//GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D) GD.Load("res://Textures/hand.png");
-				var spaceState = GetWorld3D().DirectSpaceState;
 				var topLeft = GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastTopLeft");
 				var topRight = GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastTopRight");
 				var botLeft = GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastBotLeft");
@@ -67,34 +67,156 @@ public partial class perspective_raycast : RayCast3D
 
 				float dist = float.MaxValue;
 
-				if (topLeft.IsColliding()) dist = topLeft.GetCollisionPoint().DistanceTo(GlobalPosition);
+				if (topLeft.IsColliding())
+				{
+					try
+					{
+						portal port = (portal)GetCollider();
+						RayCast3D after = port.Recalculate(this);
+						after.AddException(toCarry);
+						if (after.IsColliding())
+						{
+							dist = topLeft.GetCollisionPoint().DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint());
+						}
+						else
+						{
+							dist = topLeft.GetCollisionPoint().DistanceTo(GlobalPosition);
+						}
+					}
+					catch
+					{
+						dist = topLeft.GetCollisionPoint().DistanceTo(GlobalPosition);
+					}
+				}
 				if (topRight.IsColliding())
 				{
-					float tmp = topRight.GetCollisionPoint().DistanceTo(GlobalPosition);
+					float tmp;
+					try
+					{
+						portal port = (portal)GetCollider();
+						RayCast3D after = port.Recalculate(this);
+						after.AddException(toCarry);
+						if (after.IsColliding())
+						{
+							tmp = topRight.GetCollisionPoint().DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint());
+						}
+						else
+						{
+							tmp = topRight.GetCollisionPoint().DistanceTo(GlobalPosition);
+						}
+					}
+					catch
+					{
+						tmp = topRight.GetCollisionPoint().DistanceTo(GlobalPosition);
+					}
+					//float tmp = topRight.GetCollisionPoint().DistanceTo(GlobalPosition);
 					if (tmp < dist) dist = tmp;
 				}
 				if (botLeft.IsColliding())
 				{
-					float tmp = botLeft.GetCollisionPoint().DistanceTo(GlobalPosition);
+					float tmp;
+					try
+					{
+						portal port = (portal)GetCollider();
+						RayCast3D after = port.Recalculate(this);
+						after.AddException(toCarry);
+						if (after.IsColliding())
+						{
+							tmp = botLeft.GetCollisionPoint().DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint());
+						}
+						else
+						{
+							tmp = botLeft.GetCollisionPoint().DistanceTo(GlobalPosition);
+						}
+					}
+					catch
+					{
+						tmp = botLeft.GetCollisionPoint().DistanceTo(GlobalPosition);
+					}
+					//float tmp = topRight.GetCollisionPoint().DistanceTo(GlobalPosition);
 					if (tmp < dist) dist = tmp;
 				}
 				if (botRight.IsColliding())
 				{
-					float tmp = botRight.GetCollisionPoint().DistanceTo(GlobalPosition);
+					float tmp;
+					try
+					{
+						portal port = (portal)GetCollider();
+						RayCast3D after = port.Recalculate(this);
+						after.AddException(toCarry);
+						if (after.IsColliding())
+						{
+							tmp = botRight.GetCollisionPoint().DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint());
+						}
+						else
+						{
+							tmp = botRight.GetCollisionPoint().DistanceTo(GlobalPosition);
+						}
+					}
+					catch
+					{
+						tmp = botRight.GetCollisionPoint().DistanceTo(GlobalPosition);
+					}
+					//float tmp = topRight.GetCollisionPoint().DistanceTo(GlobalPosition);
 					if (tmp < dist) dist = tmp;
 				}
-				if (dist < GetCollisionPoint().DistanceTo(GlobalPosition))
+
+				try
 				{
-					float diff = GetCollisionPoint().DistanceTo(GlobalPosition) - dist;
-					toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized() * (diff + Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
-					shape.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
-					box.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+					portal port = (portal)GetCollider();
+					RayCast3D after = port.Recalculate(this);
+					after.AddException(toCarry);
+
+					if (after.IsColliding())
+					{
+						if (dist < GetCollisionPoint().DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint()))
+						{
+							float diff = GetCollisionPoint().DistanceTo(GlobalPosition) - dist;
+							toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized() * (diff + Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
+							shape.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+							box.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+						}
+						else
+						{
+							GD.Print("recalculated");
+							toCarry.GlobalPosition = after.GetCollisionPoint() + (after.GlobalPosition - after.GetCollisionPoint()).Normalized() * (Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
+							shape.Scale = new Vector3(1f, 1f, 1f) * (toCarry.GlobalPosition.DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint())) * mult;
+							box.Scale = new Vector3(1f, 1f, 1f) * (toCarry.GlobalPosition.DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint())) * mult;
+							//GetNode<CsgSphere3D>("/root/Root/Pointer").GlobalPosition = after.GetCollisionPoint();
+						}
+					}
+					else
+					{
+						if (dist < GetCollisionPoint().DistanceTo(GlobalPosition))
+						{
+							float diff = GetCollisionPoint().DistanceTo(GlobalPosition) - dist;
+							toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized() * (diff + Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
+							shape.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+							box.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+						}
+						else
+						{
+							toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized() * (Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
+							shape.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+							box.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+						}
+					}
 				}
-				else
+				catch
 				{
-					toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized() * (Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
-					shape.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
-					box.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+					if (dist < GetCollisionPoint().DistanceTo(GlobalPosition))
+					{
+						float diff = GetCollisionPoint().DistanceTo(GlobalPosition) - dist;
+						toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized() * (diff + Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
+						shape.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+						box.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+					}
+					else
+					{
+						toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized() * (Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
+						shape.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+						box.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+					}
 				}
 			}
 			else
@@ -106,7 +228,25 @@ public partial class perspective_raycast : RayCast3D
 				}
 				catch
 				{
-					GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+					try
+					{
+						portal port = (portal)GetCollider();
+						try
+						{
+							RayCast3D after = port.Recalculate(this);
+							//after.AddException(toCarry);
+							RigidBody3D body = (RigidBody3D)after.GetCollider();
+							GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand.png");
+						}
+						catch
+						{
+							GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+						}
+					}
+					catch
+					{
+						GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+					}
 				}
 			}
 		}
@@ -137,6 +277,7 @@ public partial class perspective_raycast : RayCast3D
 					toCarry.Freeze = false;
 					Except(false);
 					toCarry.ContactMonitor = false;
+					if (after != null) after.ClearExceptions();
 				}
 			}
 			else if (IsColliding())
@@ -153,7 +294,30 @@ public partial class perspective_raycast : RayCast3D
 				}
 				catch
 				{
+					try
+					{
+						portal port = (portal)GetCollider();
+						try
+						{
+							after = port.Recalculate(this);
+							RigidBody3D coll = (RigidBody3D)after.GetCollider();
+							toCarry = coll;
+							after.AddException(toCarry);
+							toCarry.Freeze = true;
+							Except(true);
+							carry = true;
+							toCarry.ContactMonitor = true;
+							GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
+						}
+						catch
+						{
 
+						}
+					}
+					catch
+					{
+
+					}
 				}
 			}
 
