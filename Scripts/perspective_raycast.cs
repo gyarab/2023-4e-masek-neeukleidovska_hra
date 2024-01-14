@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections;
 
 public partial class perspective_raycast : RayCast3D
 {
@@ -8,6 +9,7 @@ public partial class perspective_raycast : RayCast3D
 	float mult;
 	RigidBody3D toCarry = new RigidBody3D();
 	RayCast3D after;
+	ArrayList excepted = new ArrayList();
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -34,7 +36,17 @@ public partial class perspective_raycast : RayCast3D
 			topRight.RotationDegrees = new Vector3((float)xDeg, 0, (float)zDeg);
 			botLeft.RotationDegrees = new Vector3((float)-xDeg, 0, (float)-zDeg);
 			botRight.RotationDegrees = new Vector3((float)-xDeg, 0, (float)zDeg);
-			mult = Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / toCarry.GlobalPosition.DistanceTo(GlobalPosition);
+			
+			try
+			{
+				portal port = (portal)GetCollider();
+				RayCast3D after = port.Recalculate(this);
+				mult = Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / (toCarry.GlobalPosition.DistanceTo(after.GlobalPosition) + GetCollisionPoint().DistanceTo(GlobalPosition));
+			}
+			catch
+			{
+				mult = Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / toCarry.GlobalPosition.DistanceTo(GlobalPosition);
+			}
 			toCarry.SetCollisionLayerValue(7, false);
 			toCarry.SetCollisionLayerValue(8, true);
 		}
@@ -45,6 +57,11 @@ public partial class perspective_raycast : RayCast3D
 			GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastBotLeft").ClearExceptions();
 			GetNode<RayCast3D>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter/RayCastBotRight").ClearExceptions();
 			ClearExceptions();
+			foreach (RayCast3D ray in excepted)
+			{
+				ray.ClearExceptions();
+			}
+			excepted = new ArrayList();
 			toCarry.SetCollisionLayerValue(7, true);
 			toCarry.SetCollisionLayerValue(8, false);
 		}
@@ -73,6 +90,7 @@ public partial class perspective_raycast : RayCast3D
 					{
 						portal port = (portal)GetCollider();
 						RayCast3D after = port.Recalculate(this);
+						if (!excepted.Contains(after)) excepted.Add(after);
 						after.AddException(toCarry);
 						if (after.IsColliding())
 						{
@@ -95,6 +113,7 @@ public partial class perspective_raycast : RayCast3D
 					{
 						portal port = (portal)GetCollider();
 						RayCast3D after = port.Recalculate(this);
+						if (!excepted.Contains(after)) excepted.Add(after);
 						after.AddException(toCarry);
 						if (after.IsColliding())
 						{
@@ -119,6 +138,7 @@ public partial class perspective_raycast : RayCast3D
 					{
 						portal port = (portal)GetCollider();
 						RayCast3D after = port.Recalculate(this);
+						if (!excepted.Contains(after)) excepted.Add(after);
 						after.AddException(toCarry);
 						if (after.IsColliding())
 						{
@@ -143,6 +163,7 @@ public partial class perspective_raycast : RayCast3D
 					{
 						portal port = (portal)GetCollider();
 						RayCast3D after = port.Recalculate(this);
+						if (!excepted.Contains(after)) excepted.Add(after);
 						after.AddException(toCarry);
 						if (after.IsColliding())
 						{
@@ -165,23 +186,34 @@ public partial class perspective_raycast : RayCast3D
 				{
 					portal port = (portal)GetCollider();
 					RayCast3D after = port.Recalculate(this);
+					if (!excepted.Contains(after)) excepted.Add(after);
 					after.AddException(toCarry);
 
 					if (after.IsColliding())
 					{
 						if (dist < GetCollisionPoint().DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint()))
 						{
-							float diff = GetCollisionPoint().DistanceTo(GlobalPosition) - dist;
-							toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized() * (diff + Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
-							shape.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
-							box.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+							float diff = GetCollisionPoint().DistanceTo(GlobalPosition) + after.GetCollisionPoint().DistanceTo(after.GlobalPosition) - dist;
+							if (diff > after.GetCollisionPoint().DistanceTo(after.GlobalPosition))
+							{
+								toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized() * (diff - after.GetCollisionPoint().DistanceTo(after.GlobalPosition) + Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
+								shape.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+								box.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
+							}
+							else
+							{
+								toCarry.GlobalPosition = after.GetCollisionPoint() + (after.GlobalPosition - after.GetCollisionPoint()).Normalized() * (diff + Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
+								shape.Scale = new Vector3(1f, 1f, 1f) * (toCarry.GlobalPosition.DistanceTo(after.GlobalPosition) + GetCollisionPoint().DistanceTo(GlobalPosition)) * mult;
+								box.Scale = new Vector3(1f, 1f, 1f) * (toCarry.GlobalPosition.DistanceTo(after.GlobalPosition) + GetCollisionPoint().DistanceTo(GlobalPosition)) * mult;
+							}
+
 						}
 						else
 						{
-							GD.Print("recalculated");
+							//GD.Print("recalculated");
 							toCarry.GlobalPosition = after.GetCollisionPoint() + (after.GlobalPosition - after.GetCollisionPoint()).Normalized() * (Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
-							shape.Scale = new Vector3(1f, 1f, 1f) * (toCarry.GlobalPosition.DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint())) * mult;
-							box.Scale = new Vector3(1f, 1f, 1f) * (toCarry.GlobalPosition.DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint())) * mult;
+							shape.Scale = new Vector3(1f, 1f, 1f) * (toCarry.GlobalPosition.DistanceTo(after.GlobalPosition) + GlobalPosition.DistanceTo(GetCollisionPoint())) * mult;
+							box.Scale = new Vector3(1f, 1f, 1f) * (toCarry.GlobalPosition.DistanceTo(after.GlobalPosition) + GlobalPosition.DistanceTo(GetCollisionPoint())) * mult;
 							//GetNode<CsgSphere3D>("/root/Root/Pointer").GlobalPosition = after.GetCollisionPoint();
 						}
 					}
@@ -234,6 +266,7 @@ public partial class perspective_raycast : RayCast3D
 						try
 						{
 							RayCast3D after = port.Recalculate(this);
+							if (!excepted.Contains(after)) excepted.Add(after);
 							//after.AddException(toCarry);
 							RigidBody3D body = (RigidBody3D)after.GetCollider();
 							GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand.png");
@@ -300,6 +333,7 @@ public partial class perspective_raycast : RayCast3D
 						try
 						{
 							after = port.Recalculate(this);
+							if (!excepted.Contains(after)) excepted.Add(after);
 							RigidBody3D coll = (RigidBody3D)after.GetCollider();
 							toCarry = coll;
 							after.AddException(toCarry);
