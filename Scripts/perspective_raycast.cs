@@ -36,7 +36,7 @@ public partial class perspective_raycast : RayCast3D
 			topRight.RotationDegrees = new Vector3((float)xDeg, 0, (float)zDeg);
 			botLeft.RotationDegrees = new Vector3((float)-xDeg, 0, (float)-zDeg);
 			botRight.RotationDegrees = new Vector3((float)-xDeg, 0, (float)zDeg);
-			
+
 			try
 			{
 				portal port = (portal)GetCollider();
@@ -88,13 +88,14 @@ public partial class perspective_raycast : RayCast3D
 				{
 					try
 					{
-						portal port = (portal)GetCollider();
-						RayCast3D after = port.Recalculate(this);
-						if (!excepted.Contains(after)) excepted.Add(after);
-						after.AddException(toCarry);
-						if (after.IsColliding())
+						portal port = (portal)topLeft.GetCollider();
+						RayCast3D later = port.Recalculate(topLeft);
+						if (!excepted.Contains(later)) excepted.Add(later);
+						later.AddException(toCarry);
+						if (later.IsColliding())
 						{
-							dist = topLeft.GetCollisionPoint().DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint());
+							dist = topLeft.GetCollisionPoint().DistanceTo(GlobalPosition) + later.GlobalPosition.DistanceTo(later.GetCollisionPoint());
+							//GD.Print("TL: " + dist);
 						}
 						else
 						{
@@ -111,13 +112,14 @@ public partial class perspective_raycast : RayCast3D
 					float tmp;
 					try
 					{
-						portal port = (portal)GetCollider();
-						RayCast3D after = port.Recalculate(this);
-						if (!excepted.Contains(after)) excepted.Add(after);
-						after.AddException(toCarry);
-						if (after.IsColliding())
+						portal port = (portal)topRight.GetCollider();
+						RayCast3D later = port.Recalculate(topRight);
+						if (!excepted.Contains(later)) excepted.Add(later);
+						later.AddException(toCarry);
+						if (later.IsColliding())
 						{
-							tmp = topRight.GetCollisionPoint().DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint());
+							tmp = topRight.GetCollisionPoint().DistanceTo(GlobalPosition) + later.GlobalPosition.DistanceTo(later.GetCollisionPoint());
+							//GD.Print("TR: " + tmp);
 						}
 						else
 						{
@@ -136,13 +138,14 @@ public partial class perspective_raycast : RayCast3D
 					float tmp;
 					try
 					{
-						portal port = (portal)GetCollider();
-						RayCast3D after = port.Recalculate(this);
-						if (!excepted.Contains(after)) excepted.Add(after);
-						after.AddException(toCarry);
-						if (after.IsColliding())
+						portal port = (portal)botLeft.GetCollider();
+						RayCast3D later = port.Recalculate(botLeft);
+						if (!excepted.Contains(later)) excepted.Add(later);
+						later.AddException(toCarry);
+						if (later.IsColliding())
 						{
-							tmp = botLeft.GetCollisionPoint().DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint());
+							tmp = botLeft.GetCollisionPoint().DistanceTo(GlobalPosition) + later.GlobalPosition.DistanceTo(later.GetCollisionPoint());
+							//GD.Print("BL: " + tmp);
 						}
 						else
 						{
@@ -161,13 +164,14 @@ public partial class perspective_raycast : RayCast3D
 					float tmp;
 					try
 					{
-						portal port = (portal)GetCollider();
-						RayCast3D after = port.Recalculate(this);
-						if (!excepted.Contains(after)) excepted.Add(after);
-						after.AddException(toCarry);
-						if (after.IsColliding())
+						portal port = (portal)botRight.GetCollider();
+						RayCast3D later = port.Recalculate(botRight);
+						if (!excepted.Contains(later)) excepted.Add(later);
+						later.AddException(toCarry);
+						if (later.IsColliding())
 						{
-							tmp = botRight.GetCollisionPoint().DistanceTo(GlobalPosition) + after.GlobalPosition.DistanceTo(after.GetCollisionPoint());
+							tmp = botRight.GetCollisionPoint().DistanceTo(GlobalPosition) + later.GlobalPosition.DistanceTo(later.GetCollisionPoint());
+							//GD.Print("BR: " + tmp);
 						}
 						else
 						{

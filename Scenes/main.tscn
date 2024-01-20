@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://d4dbhgbhrt4c4"]
+[gd_scene load_steps=25 format=3 uid="uid://d4dbhgbhrt4c4"]
 
 [ext_resource type="Script" path="res://Scripts/character_controller.cs" id="1_tmxe7"]
 [ext_resource type="Material" uid="uid://nr0xsyyqn6w2" path="res://Materials/FloorTiles.tres" id="2_1isuc"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://hvyync6nb7wf" path="res://Textures/TilesCeramicSquareLarge001/TilesCeramicSquareLarge001_ROUGH_2K.png" id="6_coriv"]
 [ext_resource type="Material" uid="uid://q62kui11tr7i" path="res://Materials/glass.tres" id="6_i74ir"]
 [ext_resource type="Material" uid="uid://bdf4tokexr7ap" path="res://Materials/red.tres" id="7_tf24y"]
+[ext_resource type="PackedScene" uid="uid://bec4r0ftxupbc" path="res://Models/chesspiece.glb" id="14_31prr"]
 [ext_resource type="Shader" path="res://Textures/portal_shader.gdshader" id="14_fr4ip"]
 [ext_resource type="Texture2D" uid="uid://bjje3ao056j1y" path="res://Textures/portal_test.tres" id="15_smst0"]
 [ext_resource type="Script" path="res://Scripts/portal.cs" id="16_lgiut"]
@@ -79,32 +80,27 @@ texture = ExtResource("2_kda8b")
 
 [node name="RayCastCenter" type="RayCast3D" parent="CharacterBody3D/CameraRig"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00223494, 0, 4.91142e-05)
-visible = false
 target_position = Vector3(0, -1000, 0)
 collision_mask = 515
 script = ExtResource("2_dtfki")
 
 [node name="RayCastTopLeft" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
 transform = Transform3D(0.984808, 0.173648, 0, -0.17101, 0.969847, -0.173648, -0.0301537, 0.17101, 0.984808, 0, 0, 0)
-visible = false
 target_position = Vector3(0, -1000, 0)
 collision_mask = 515
 
 [node name="RayCastTopRight" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
 transform = Transform3D(0.984808, -0.173648, 0, 0.17101, 0.969847, -0.173648, 0.0301537, 0.17101, 0.984808, 0, 0, 0)
-visible = false
 target_position = Vector3(0, -1000, 0)
 collision_mask = 515
 
 [node name="RayCastBotLeft" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
 transform = Transform3D(0.984808, 0.173648, 0, -0.17101, 0.969847, 0.173648, 0.0301537, -0.17101, 0.984808, 0, 0, 0)
-visible = false
 target_position = Vector3(0, -1000, 0)
 collision_mask = 515
 
 [node name="RayCastBotRight" type="RayCast3D" parent="CharacterBody3D/CameraRig/RayCastCenter"]
 transform = Transform3D(0.984808, -0.173648, 0, 0.17101, 0.969847, 0.173648, -0.0301537, -0.17101, 0.984808, 0, 0, 0)
-visible = false
 target_position = Vector3(0, -1000, 0)
 collision_mask = 515
 
@@ -133,11 +129,11 @@ size = Vector3(4.8, 0.2, 2.3)
 material = ExtResource("2_1isuc")
 
 [node name="Floor2" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 0, 3.35)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 0, 13.85)
 use_collision = true
 collision_layer = 65
 collision_mask = 65
-size = Vector3(9, 0.2, 3)
+size = Vector3(30, 0.2, 3)
 material = SubResource("StandardMaterial3D_j2ydr")
 
 [node name="OpenWall" type="CSGBox3D" parent="."]
@@ -225,31 +221,101 @@ size = Vector3(1.7, 0.2, 0.3)
 material = ExtResource("4_kgip0")
 
 [node name="Wall6" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 3.9, 0.85, 7.225)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 3.9, 0.85, 8.725)
 use_collision = true
 collision_layer = 65
 collision_mask = 65
-size = Vector3(1.5, 0.2, 1.25)
+size = Vector3(1.5, 0.2, 4.25)
 material = ExtResource("3_4qepj")
 
 [node name="Top" type="CSGBox3D" parent="Wall6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
 use_collision = true
-size = Vector3(1.7, 0.2, 1.25)
+size = Vector3(1.7, 0.2, 4.25)
 material = ExtResource("4_kgip0")
 
 [node name="Wall7" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1, 0.85, 7.65)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1, 0.85, 9.3)
 use_collision = true
 collision_layer = 65
 collision_mask = 65
-size = Vector3(1.5, 0.4, 0.4)
+size = Vector3(1.5, 0.4, 3.7)
 material = ExtResource("3_4qepj")
 
 [node name="Top" type="CSGBox3D" parent="Wall7"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
 use_collision = true
-size = Vector3(1.7, 0.4, 0.4)
+size = Vector3(1.7, 0.4, 3.7)
+material = ExtResource("4_kgip0")
+
+[node name="Wall8" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.9, 0.85, 2.5)
+use_collision = true
+collision_layer = 65
+collision_mask = 65
+size = Vector3(1.5, 0.2, 2.7)
+material = ExtResource("3_4qepj")
+
+[node name="Top" type="CSGBox3D" parent="Wall8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
+use_collision = true
+size = Vector3(1.7, 0.2, 2.7)
+material = ExtResource("4_kgip0")
+
+[node name="Wall9" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1, 0.85, 15.1)
+use_collision = true
+collision_layer = 65
+collision_mask = 65
+size = Vector3(1.5, 0.4, 5.5)
+material = ExtResource("3_4qepj")
+
+[node name="Top" type="CSGBox3D" parent="Wall9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
+use_collision = true
+size = Vector3(1.7, 0.4, 5.5)
+material = ExtResource("4_kgip0")
+
+[node name="Wall10" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1, 0.85, 22.5)
+use_collision = true
+collision_layer = 65
+collision_mask = 65
+size = Vector3(1.5, 0.4, 7)
+material = ExtResource("3_4qepj")
+
+[node name="Top" type="CSGBox3D" parent="Wall10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
+use_collision = true
+size = Vector3(1.7, 0.4, 7)
+material = ExtResource("4_kgip0")
+
+[node name="Wall11" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1, 0.85, 28)
+use_collision = true
+collision_layer = 65
+collision_mask = 65
+size = Vector3(1.5, 0.4, 1.7)
+material = ExtResource("3_4qepj")
+
+[node name="Top" type="CSGBox3D" parent="Wall11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
+use_collision = true
+size = Vector3(1.7, 0.4, 1.7)
+material = ExtResource("4_kgip0")
+
+[node name="Wall12" type="CSGBox3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 3.9, 0.85, 13.25)
+use_collision = true
+collision_layer = 65
+collision_mask = 65
+size = Vector3(1.5, 0.2, 2.5)
+material = ExtResource("3_4qepj")
+
+[node name="Top" type="CSGBox3D" parent="Wall12"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
+use_collision = true
+size = Vector3(1.7, 0.2, 2.5)
 material = ExtResource("4_kgip0")
 
 [node name="DoubleDoor1" type="MeshInstance3D" parent="."]
@@ -268,20 +334,6 @@ use_collision = true
 collision_layer = 65
 collision_mask = 65
 size = Vector3(3, 3, 0.2)
-
-[node name="Wall8" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.9, 0.85, 2.5)
-use_collision = true
-collision_layer = 65
-collision_mask = 65
-size = Vector3(1.5, 0.2, 2.7)
-material = ExtResource("3_4qepj")
-
-[node name="Top" type="CSGBox3D" parent="Wall8"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, 0)
-use_collision = true
-size = Vector3(1.7, 0.2, 2.7)
-material = ExtResource("4_kgip0")
 
 [node name="Bars" type="Node3D" parent="."]
 
@@ -439,8 +491,13 @@ freeze_mode = 1
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cube2"]
 shape = SubResource("BoxShape3D_5sask")
 
+[node name="Model" parent="Cube2/CollisionShape3D" instance=ExtResource("14_31prr")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, -0.48669, 0)
+
 [node name="CSGBox3D" type="CSGBox3D" parent="Cube2"]
 transform = Transform3D(1.03, 0, 0, 0, 1.03, 0, 0, 0, 1.03, 0, 0, 0)
+visible = false
+size = Vector3(0.6, 0.85, 0.6)
 
 [node name="Cube" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.29143, 1.5, 0)
@@ -465,11 +522,11 @@ size = Vector3(4.8, 0.2, 2.3)
 material = ExtResource("4_kgip0")
 
 [node name="Ceil2" type="CSGBox3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 3.4, 3.35)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 3.4, 13.85)
 use_collision = true
 collision_layer = 65
 collision_mask = 65
-size = Vector3(9, 0.2, 3)
+size = Vector3(30, 0.2, 3)
 material = ExtResource("4_kgip0")
 
 [node name="Portal" type="CSGBox3D" parent="."]
