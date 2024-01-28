@@ -6,7 +6,7 @@ public partial class character_controller : CharacterBody3D
 {
 	private Vector2 previousMousePosition;
 	public const float Speed = 5.0f;
-	public const float JumpVelocity = 4.5f;
+	public const float JumpVelocity = 5.5f;
 
 	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
@@ -24,7 +24,7 @@ public partial class character_controller : CharacterBody3D
 			PhysicsServer3D.AreaSetParam(GetWorld3D().Space, PhysicsServer3D.AreaParameter.Gravity, 9.8);
 
 			//Player gravity
-			gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+			gravity = 15;//ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 			if (!IsOnFloor()) velocity.Y -= gravity * (float)delta;
 
 			// Jump
@@ -51,8 +51,8 @@ public partial class character_controller : CharacterBody3D
 			}
 			else if (direction != Vector3.Zero)
 			{
-				velocity.X = Mathf.MoveToward(Velocity.X, direction.X * Speed, Speed / 20);
-				velocity.Z = Mathf.MoveToward(Velocity.Z, direction.Z * Speed, Speed / 20);
+				velocity.X = Mathf.MoveToward(Velocity.X, direction.X * Speed, Speed / 30);
+				velocity.Z = Mathf.MoveToward(Velocity.Z, direction.Z * Speed, Speed / 30);
 			}
 		}
 		else

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://desamhdk8j3sa"
+path="res://.godot/imported/School_chair.obj-e80fb17e8ad480112199a298afb7e9b9.mesh"
+
+[deps]
+
+files=["res://.godot/imported/School_chair.obj-e80fb17e8ad480112199a298afb7e9b9.mesh"]
+
+source_file="res://Models/School_chair.obj"
+dest_files=["res://.godot/imported/School_chair.obj-e80fb17e8ad480112199a298afb7e9b9.mesh", "res://.godot/imported/School_chair.obj-e80fb17e8ad480112199a298afb7e9b9.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

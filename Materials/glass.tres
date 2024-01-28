@@ -3,9 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://chy6jmy3p1743" path="res://Textures/glass.jpg" id="1_3v31a"]
 
 [resource]
-albedo_color = Color(0.988235, 1, 1, 1)
 albedo_texture = ExtResource("1_3v31a")
-roughness = 0.0
+metallic = 0.75
+roughness = 0.2
 uv1_scale = Vector3(0.005, 0.005, 0.005)
 uv1_offset = Vector3(-0.125, 0, 0)
 uv1_triplanar = true
