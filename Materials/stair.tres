@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://d77vfr7iq4hh"]
+
+[ext_resource type="Texture2D" uid="uid://bo3nfk8uuekyy" path="res://Textures/stair_tile.jpg" id="1_vh6qd"]
+[ext_resource type="Texture2D" uid="uid://dq8v2u0mlg664" path="res://Textures/TilesCeramicSquareLarge001/TilesCeramicSquareLarge001_DISP_2K.jpg" id="2_ijqnw"]
+[ext_resource type="Texture2D" uid="uid://utqg2uy53ojd" path="res://Textures/TilesCeramicSquareLarge001/TilesCeramicSquareLarge001_NRM_2K.jpg" id="3_wymce"]
+[ext_resource type="Texture2D" uid="uid://hvyync6nb7wf" path="res://Textures/TilesCeramicSquareLarge001/TilesCeramicSquareLarge001_ROUGH_2K.png" id="4_86knm"]
+
+[resource]
+albedo_texture = ExtResource("1_vh6qd")
+metallic_specular = 0.0
+roughness_texture = ExtResource("4_86knm")
+roughness_texture_channel = 4
+normal_enabled = true
+normal_texture = ExtResource("3_wymce")
+heightmap_texture = ExtResource("2_ijqnw")
+uv1_scale = Vector3(3.295, 3.295, 3.295)
+uv1_offset = Vector3(-0.215, 0.065, -0.509)
+uv1_triplanar = true

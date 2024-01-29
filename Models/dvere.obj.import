@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c5yae7uk48vdb"
+path="res://.godot/imported/dvere.obj-56fdf463f0fc675e653af6e3781ad600.mesh"
+
+[deps]
+
+files=["res://.godot/imported/dvere.obj-56fdf463f0fc675e653af6e3781ad600.mesh"]
+
+source_file="res://Models/dvere.obj"
+dest_files=["res://.godot/imported/dvere.obj-56fdf463f0fc675e653af6e3781ad600.mesh", "res://.godot/imported/dvere.obj-56fdf463f0fc675e653af6e3781ad600.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true

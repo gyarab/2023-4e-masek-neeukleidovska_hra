@@ -5,8 +5,8 @@ using System;
 public partial class character_controller : CharacterBody3D
 {
 	private Vector2 previousMousePosition;
-	public const float Speed = 5.0f;
-	public const float JumpVelocity = 5.5f;
+	public const float Speed = 3.0f;
+	public const float JumpVelocity = 4.5f;
 
 	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
@@ -42,17 +42,19 @@ public partial class character_controller : CharacterBody3D
 				{
 					velocity.X = direction.X * Speed;
 					velocity.Z = direction.Z * Speed;
+					GetNode<view_bobbing>("CameraRig/WalkingAnimation").Walking(true);
 				}
 				else
 				{
+					GetNode<view_bobbing>("CameraRig/WalkingAnimation").Walking(false);
 					velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
 					velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
 				}
 			}
 			else if (direction != Vector3.Zero)
 			{
-				velocity.X = Mathf.MoveToward(Velocity.X, direction.X * Speed, Speed / 30);
-				velocity.Z = Mathf.MoveToward(Velocity.Z, direction.Z * Speed, Speed / 30);
+				velocity.X = Mathf.MoveToward(Velocity.X, direction.X * Speed, Speed / 20);
+				velocity.Z = Mathf.MoveToward(Velocity.Z, direction.Z * Speed, Speed / 20);
 			}
 		}
 		else
