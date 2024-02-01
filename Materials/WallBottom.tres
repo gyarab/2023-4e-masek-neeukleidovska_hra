@@ -6,11 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://drf0t8y3a2m3w" path="res://Textures/PlasterPlain001/PlasterPlain001_ROUGHNESS_1K_METALNESS.png" id="4_xyc8u"]
 
 [resource]
-albedo_color = Color(1, 0.870588, 0.729412, 1)
+albedo_color = Color(1, 0.992157, 0.8, 1)
 metallic = 1.0
 metallic_texture = ExtResource("2_ym7al")
 roughness_texture = ExtResource("4_xyc8u")
 normal_enabled = true
 normal_texture = ExtResource("3_lppfh")
 heightmap_texture = ExtResource("1_8736g")
+uv1_offset = Vector3(0.15, 0, 0)
 uv1_triplanar = true

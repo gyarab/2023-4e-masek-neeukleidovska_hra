@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bupxxgq1hlu0e"
+path="res://.godot/imported/Windows.obj-ae0026b4d897ac67f4c1bedd46378276.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Windows.obj-ae0026b4d897ac67f4c1bedd46378276.mesh"]
+
+source_file="res://Models/Windows.obj"
+dest_files=["res://.godot/imported/Windows.obj-ae0026b4d897ac67f4c1bedd46378276.mesh", "res://.godot/imported/Windows.obj-ae0026b4d897ac67f4c1bedd46378276.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
