@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Euclid"
+config/name="Paradigm"
 run/main_scene="res://Scenes/main.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
