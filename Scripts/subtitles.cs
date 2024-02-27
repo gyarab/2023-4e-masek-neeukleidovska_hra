@@ -11,7 +11,7 @@ public partial class subtitles : Label3D
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
 		if (time > -26) {
 			time--;

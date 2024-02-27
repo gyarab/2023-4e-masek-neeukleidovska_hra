@@ -16,7 +16,7 @@ public partial class perspective_raycast : RayCast3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		sequencer = GetNode<sequencer>("/root/Root/Sequencer");
+		sequencer = GetNode<sequencer>("/root/Sequencer");
 	}
 
 	public void Except(bool exc)

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class sequencer : Node3D
+public partial class sequencer : Node
 {
 	public bool nextSeq = true;
 	public int seqNum = 1;
@@ -28,6 +28,7 @@ public partial class sequencer : Node3D
 			switch (seqNum)
 			{
 				case 1:
+					GetNode<unfade>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Fader").fadeOut = true;
 					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_1");
 					subtitleArray = new string[800];
 					subtitleArray[0] = "Damn, what am I doing here so early?";
@@ -39,18 +40,34 @@ public partial class sequencer : Node3D
 					break;
 				case 2:
 					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_2");
-					subtitleArray = new string[700];
-					subtitleArray[149] = "I'm so damn sleepy!";
+					subtitleArray = new string[800];
+					subtitleArray[99] = "I'm so damn sleepy!";
 					subtitleArray[249] = " ";
-					subtitleArray[399] = "The lesson starts in fourty minutes, maybe I could get a short nap";
+					subtitleArray[349] = "The lesson starts in fourty minutes, maybe I could get a short nap";
 					subtitleArray[599] = "Someone will wake me up anyway....";
 					subtitleArray[699] = " ";
+					time = 0;
+					break;
+				case 3:
+					subtitles = GetNode<subtitles>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Subtitles");
+					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_3");
+					GetNode<unfade>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Fader").setOut = true;
+					subtitleArray = new string[500];
+					subtitleArray[0] = "What the hell was that?! Why is it dark outside?";
+					subtitleArray[199] = "Did I sleep through the whole day? No wayy!";
+					subtitleArray[349] = "I have to get the hell out of here";
+					subtitleArray[499] = " ";
 					time = 0;
 					break;
 			}
 		}
 
 		if (seqNum == 2 && time == 540) GetNode<unfade>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Fader").fadeIn = true;
+		if (seqNum == 2 && time == 749) GetTree().ChangeSceneToFile("res://Scenes/night.tscn");
+		if (seqNum == 2 && time == 799) {
+			seqNum++;
+			nextSeq = true;
+		}
 
 		try
 		{

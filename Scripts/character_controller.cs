@@ -5,7 +5,7 @@ using System;
 public partial class character_controller : CharacterBody3D
 {
 	private Vector2 previousMousePosition;
-	public const float Speed = 3.0f;
+	public const float Speed = 2.1f;
 	public const float JumpVelocity = 4.5f;
 
 	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
@@ -101,6 +101,18 @@ public partial class character_controller : CharacterBody3D
 		}
 		Velocity = velocity;
 		MoveAndSlide();
+
+		if (Position.Y < -0.69) {
+			Vector3 tmp = GlobalPosition;
+			tmp.Y += 3.4f;
+			GlobalPosition = tmp;
+		} else if (Position.Y > 2.72) {
+			Vector3 tmp = GlobalPosition;
+			tmp.Y -= 3.4f;
+			GlobalPosition = tmp;
+		}
+
+		//GD.Print("Position: " + GlobalPosition.Y);
 		//PerspectiveRaycast();
 		/*if (Position.Z < 0 && Position.Y < 5) {
 			Position = new Vector3(Position.X, Position.Y + 10, Position.Z);
