@@ -62,3 +62,8 @@ ui_jump={
 [physics]
 
 3d/physics_engine="GodotPhysics3D"
+
+[rendering]
+
+lights_and_shadows/use_physical_light_units=true
+lights_and_shadows/positional_shadow/atlas_size=8192

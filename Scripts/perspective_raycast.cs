@@ -10,10 +10,13 @@ public partial class perspective_raycast : RayCast3D
 	RigidBody3D toCarry = new RigidBody3D();
 	RayCast3D after;
 	ArrayList excepted = new ArrayList();
+	bool fc = true;
+
+	sequencer sequencer;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-
+		sequencer = GetNode<sequencer>("/root/Root/Sequencer");
 	}
 
 	public void Except(bool exc)
@@ -282,9 +285,21 @@ public partial class perspective_raycast : RayCast3D
 					}
 					catch
 					{
-						GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+						try
+						{
+							sittable sittable = (sittable) GetCollider();
+							if (GetCollisionPoint().DistanceTo(GlobalPosition) < 2 && sequencer.seqNum == 1) GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
+							else GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+						}
+						catch
+						{
+							GetNode<Sprite3D>("/root/Root/CharacterBody3D/CameraRig/Camera3D/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+						}
+
 					}
+
 				}
+
 			}
 		}
 		else if (!carry)
@@ -295,8 +310,29 @@ public partial class perspective_raycast : RayCast3D
 
 	public override void _Input(InputEvent @event)
 	{
+		if (@event is InputEventKey eventKeyboard && eventKeyboard.Keycode == Key.E && eventKeyboard.Pressed && sequencer.seqNum == 1 && IsColliding())
+		{
+			try
+			{
+				sittable sittable = (sittable)GetCollider();
+				if (GetCollisionPoint().DistanceTo(GlobalPosition) < 2)
+				{
+					sequencer.seqNum++;
+					sequencer.nextSeq = true;
+				}
+			}
+			catch
+			{
+
+			}
+		}
+
 		if (@event is InputEventMouseButton eventMouseButton && eventMouseButton.ButtonIndex.Equals(MouseButton.Right) && eventMouseButton.Pressed)
 		{
+			/*if (fc) {
+				DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
+				fc = false;
+			}*/
 			if (carry)
 			{
 				bool inPlayer = false;
