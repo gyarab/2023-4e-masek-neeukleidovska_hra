@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class subtitles : Label3D
+public partial class subtitles : Label
 {
 	string text;
 	int time;
@@ -15,12 +15,12 @@ public partial class subtitles : Label3D
 	{
 		if (time > -26) {
 			time--;
-			Color tmpMod = Modulate;
-			Color tmpOut = OutlineModulate;
+			Color tmpMod = LabelSettings.FontColor;
+			Color tmpOut = LabelSettings.OutlineColor;
 			tmpMod.A = 1f / 25f * Math.Abs(time);
 			tmpOut.A = 1f / 25f * Math.Abs(time);
-			Modulate = tmpMod;
-			OutlineModulate = tmpOut;
+			LabelSettings.FontColor = tmpMod;
+			LabelSettings.OutlineColor = tmpOut;
 			if (time == 0) Text = text;
 		}
 	}

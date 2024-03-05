@@ -6,6 +6,7 @@ public partial class character_controller : CharacterBody3D
 {
 	private Vector2 previousMousePosition;
 	public const float Speed = 2.1f;
+	public const float SprintSpeed = 3.2f;
 	public const float JumpVelocity = 4.5f;
 
 	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
@@ -18,7 +19,7 @@ public partial class character_controller : CharacterBody3D
 		if (GetNode<Node3D>("CameraRig").RotationDegrees.X <= 90 && GetNode<Node3D>("CameraRig").RotationDegrees.X >= -90)
 		{
 			//Camera position
-			GetNode<Node3D>("CameraRig").Position = new Vector3(GetNode<Node3D>("CameraRig").Position.X,Mathf.MoveToward(GetNode<Node3D>("CameraRig").Position.Y, 0.5f, 0.03f), GetNode<Node3D>("CameraRig").Position.Z);
+			GetNode<Node3D>("CameraRig").Position = new Vector3(GetNode<Node3D>("CameraRig").Position.X, Mathf.MoveToward(GetNode<Node3D>("CameraRig").Position.Y, 0.5f, 0.03f), GetNode<Node3D>("CameraRig").Position.Z);
 
 			//Item gravity
 			PhysicsServer3D.AreaSetParam(GetWorld3D().Space, PhysicsServer3D.AreaParameter.Gravity, 9.8);
@@ -40,9 +41,18 @@ public partial class character_controller : CharacterBody3D
 			{
 				if (direction != Vector3.Zero)
 				{
-					velocity.X = direction.X * Speed;
-					velocity.Z = direction.Z * Speed;
-					GetNode<view_bobbing>("CameraRig/WalkingAnimation").Walking(true);
+					if (Input.IsActionPressed("ui_sprint") && GetNode<sequencer>("/root/Sequencer").seqNum > 3)
+					{
+						velocity.X = direction.X * SprintSpeed;
+						velocity.Z = direction.Z * SprintSpeed;
+						GetNode<view_bobbing>("CameraRig/WalkingAnimation").Walking(true);
+					}
+					else
+					{
+						velocity.X = direction.X * Speed;
+						velocity.Z = direction.Z * Speed;
+						GetNode<view_bobbing>("CameraRig/WalkingAnimation").Walking(true);
+					}
 				}
 				else
 				{
@@ -102,7 +112,7 @@ public partial class character_controller : CharacterBody3D
 		Velocity = velocity;
 		MoveAndSlide();
 
-		if (Position.Y < -0.69) {
+		/*if (Position.Y < -0.69) {
 			Vector3 tmp = GlobalPosition;
 			tmp.Y += 3.4f;
 			GlobalPosition = tmp;
@@ -110,7 +120,7 @@ public partial class character_controller : CharacterBody3D
 			Vector3 tmp = GlobalPosition;
 			tmp.Y -= 3.4f;
 			GlobalPosition = tmp;
-		}
+		}*/
 
 		//GD.Print("Position: " + GlobalPosition.Y);
 		//PerspectiveRaycast();
@@ -130,11 +140,14 @@ public partial class character_controller : CharacterBody3D
 			//else rotationSpeedX = -0.006f;
 			RotateObjectLocal(Vector3.Up, -mouseDelta.X * rotationSpeedX);
 			GetNode<Node3D>("CameraRig").Rotate(Vector3.Right, -mouseDelta.Y * rotationSpeedY);
-			if (GetNode<Node3D>("CameraRig").RotationDegrees.X > 90) {
+			if (GetNode<Node3D>("CameraRig").RotationDegrees.X > 90)
+			{
 				Vector3 rd = GetNode<Node3D>("CameraRig").RotationDegrees;
 				rd.X = 90;
 				GetNode<Node3D>("CameraRig").RotationDegrees = rd;
-			} else if (GetNode<Node3D>("CameraRig").RotationDegrees.X < -90) {
+			}
+			else if (GetNode<Node3D>("CameraRig").RotationDegrees.X < -90)
+			{
 				Vector3 rd = GetNode<Node3D>("CameraRig").RotationDegrees;
 				rd.X = -90;
 				GetNode<Node3D>("CameraRig").RotationDegrees = rd;
@@ -146,7 +159,7 @@ public partial class character_controller : CharacterBody3D
 			previousMousePosition = mouseEvent.Position;
 		}
 	}
-	
+
 	/*void PerspectiveRaycast() {
 		Dictionary result = GetWorld3D().DirectSpaceState.IntersectRay(PhysicsRayQueryParameters3D.Create(Vector3.Zero, Vector3.Forward));
 		GD.Print(result["collider"]);
