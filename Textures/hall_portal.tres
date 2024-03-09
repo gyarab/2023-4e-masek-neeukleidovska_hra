@@ -1,0 +1,4 @@
+[gd_resource type="ViewportTexture" format=3 uid="uid://5fjakkxan1yj"]
+
+[resource]
+viewport_path = NodePath("Hallway/Portal1R2/SubViewport")

@@ -301,7 +301,16 @@ public partial class perspective_raycast : RayCast3D
 							}
 							catch
 							{
-								GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+								try
+								{
+									locked_door locked_door = (locked_door)GetCollider();
+									if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1 && sequencer.seqNum == 5) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
+									else GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+								}
+								catch
+								{
+									GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+								}
 							}
 						}
 
@@ -343,7 +352,20 @@ public partial class perspective_raycast : RayCast3D
 				}
 				catch
 				{
+					try
+					{
+						locked_door locked_door = (locked_door)GetCollider();
+						if (sequencer.seqNum == 5 && GetCollisionPoint().DistanceTo(GlobalPosition) < 1)
+						{
+							AudioStreamPlayer allPurpose = GetNode<AudioStreamPlayer>("/root/Root/CharacterBody3D/AllPurpose");
+							allPurpose.Stream = (AudioStream)GD.Load("res://Audio/locked.mp3");
+							allPurpose.Play();
+						}
+					}
+					catch
+					{
 
+					}
 				}
 			}
 		}

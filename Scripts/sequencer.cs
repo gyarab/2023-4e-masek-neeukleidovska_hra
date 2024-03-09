@@ -87,7 +87,6 @@ public partial class sequencer : Node
 
 		if (seqNum == 1 && time == 149) informative.Inform("Use [WASD] to move and [SPACE] to jump");
 		if (seqNum == 1 && time == 399) informative.Inform("Use [E] to interact");
-		if (seqNum == 1 && time == 599) informative.Inform(" ");
 
 		if (seqNum == 2 && time == 540) GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
 		if (seqNum == 2 && time == 749) GetTree().ChangeSceneToFile("res://Scenes/night.tscn");
