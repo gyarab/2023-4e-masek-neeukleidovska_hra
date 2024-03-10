@@ -82,20 +82,46 @@ public partial class sequencer : Node
 					subtitleArray[199] = " ";
 					time = 0;
 					break;
+				case 6:
+					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_6");
+					GetNode<AudioStreamPlayer3D>("/root/Root/CapeHolder/GhostCape/AudioStreamPlayer3D").Stop();
+					subtitleArray = new string[400];
+					subtitleArray[129] = "Where the hell am I??? This isn't my school, not with THAT THING!";
+					subtitleArray[399] = " ";
+					time = 0;
+					break;
+				case 7:
+					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_7");
+					subtitleArray = new string[600];
+					subtitleArray[0] = "What's this? Looks like some kind of a weapon, could be useful...";
+					subtitleArray[249] = " ";
+					subtitleArray[399] = "I should try it on that apple";
+					subtitleArray[599] = " ";
+					time = 0;
+					break;
+				case 8:
+					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_8");
+					GetNode<perspective_raycast>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter").Grab();
+					subtitleArray = new string[800];
+					subtitleArray[0] = "Wow, it's giant!!";
+					subtitleArray[249] = "So it can change scale of things...";
+					subtitleArray[599] = "Maybe I could crush that ghost by making something large";
+					subtitleArray[799] = " ";
+					time = 0;
+					break;
 			}
 		}
 
 		if (seqNum == 1 && time == 149) informative.Inform("Use [WASD] to move and [SPACE] to jump");
-		if (seqNum == 1 && time == 399) informative.Inform("Use [E] to interact");
-
-		if (seqNum == 2 && time == 540) GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
-		if (seqNum == 2 && time == 749) GetTree().ChangeSceneToFile("res://Scenes/night.tscn");
-		if (seqNum == 2 && time == 799)
+		else if (seqNum == 1 && time == 399) informative.Inform("Use [E] to interact");
+		else if (seqNum == 2 && time == 540) GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
+		else if (seqNum == 2 && time == 749) GetTree().ChangeSceneToFile("res://Scenes/night.tscn");
+		else if (seqNum == 2 && time == 799)
 		{
 			seqNum++;
 			nextSeq = true;
 		}
-		if (seqNum == 3)
+		else if (seqNum == 3)
 		{
 
 			CharacterBody3D player = GetNode<CharacterBody3D>("/root/Root/CharacterBody3D");
@@ -125,14 +151,38 @@ public partial class sequencer : Node
 				player.GlobalPosition = tmp;
 			}
 		}
-
-		if (seqNum == 4 && time == 599) informative.Inform("Use [SHIFT] to sprint");
-
-		if (seqNum == 5 && time == 59) GetNode<AudioStreamPlayer3D>("/root/Root/Hallway/Doors/DoubleDoor1/CSGBox3D/AudioStreamPlayer3D").Play();
-		if (seqNum == 5 && time == 299)
+		else if (seqNum == 4 && time == 599) informative.Inform("Use [SHIFT] to sprint");
+		else if (seqNum == 5 && time == 59) GetNode<AudioStreamPlayer3D>("/root/Root/Hallway/Doors/DoubleDoor1/CSGBox3D/AudioStreamPlayer3D").Play();
+		else if (seqNum == 5 && time == 299)
 		{
 			GetNode<AudioStreamPlayer3D>("/root/Root/Hallway/Doors/DoubleDoor1/CSGBox3D/AudioStreamPlayer3D").Stream = (AudioStream)GD.Load("res://Audio/chase.mp3");
 			GetNode<AudioStreamPlayer3D>("/root/Root/Hallway/Doors/DoubleDoor1/CSGBox3D/AudioStreamPlayer3D").Play();
+		}
+		else if (seqNum == 6 && time == 29)
+		{
+			AudioStreamPlayer allPurpose = GetNode<AudioStreamPlayer>("/root/Root/CharacterBody3D/AllPurpose");
+			allPurpose.Stream = (AudioStream)GD.Load("res://Audio/open.mp3");
+			allPurpose.Play();
+		}
+		else if (seqNum == 6 && time == 119)
+		{
+			AudioStreamPlayer allPurpose = GetNode<AudioStreamPlayer>("/root/Root/CharacterBody3D/AllPurpose");
+			allPurpose.Stream = (AudioStream)GD.Load("res://Audio/open.mp3");
+			allPurpose.Play();
+		}
+		else if (seqNum == 7 && time == 512)
+		{
+			Node3D manipulator = GetNode<Node3D>("/root/Root/Math/Manipulator");
+			Transform3D tmp = manipulator.GlobalTransform;
+			manipulator.GetParent().RemoveChild(manipulator);
+			GetNode<Node3D>("/root/Root/CharacterBody3D/CameraRig").AddChild(manipulator);
+			manipulator.GlobalTransform = tmp;
+			manipulator.GetNode<CsgBox3D>("Collider").UseCollision = false;
+			informative.Inform("Use [RMB] to pick up");
+		}
+		else if (seqNum == 8 && time == 119)
+		{
+			GetNode<perspective_raycast>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter").Grab();
 		}
 
 		try

@@ -68,10 +68,6 @@ ui_sprint={
 ]
 }
 
-[physics]
-
-3d/physics_engine="GodotPhysics3D"
-
 [rendering]
 
 lights_and_shadows/use_physical_light_units=true

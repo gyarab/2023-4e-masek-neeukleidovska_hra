@@ -36,6 +36,7 @@ public partial class informative : Label
 				LabelSettings.FontColor = tmpMod;
 				LabelSettings.OutlineColor = tmpOut;
 			}
+			if (time == -200) Text = " ";
 		}
 	}
 
