@@ -313,7 +313,7 @@ public partial class perspective_raycast : RayCast3D
 									try
 									{
 										math_door math_door = (math_door)GetCollider();
-										if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1 && sequencer.seqNum == 5) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
+										if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1 && (sequencer.seqNum == 5 | sequencer.seqNum == 8)) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
 										else GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
 									}
 									catch
@@ -347,8 +347,6 @@ public partial class perspective_raycast : RayCast3D
 
 	public void Grab()
 	{
-		if (allow) allow = false;
-		else allow = true;
 		if (carry)
 		{
 			bool inPlayer = false;
@@ -382,7 +380,7 @@ public partial class perspective_raycast : RayCast3D
 				GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
 			}
 			catch
-			{}
+			{ }
 		}
 	}
 
@@ -431,6 +429,13 @@ public partial class perspective_raycast : RayCast3D
 							{
 								sequencer.seqNum++;
 								sequencer.nextSeq = true;
+							}
+							else if (sequencer.seqNum == 8 && GetCollisionPoint().DistanceTo(GlobalPosition) < 1)
+							{
+								AudioStreamPlayer allPurpose = GetNode<AudioStreamPlayer>("/root/Root/CharacterBody3D/AllPurpose");
+								allPurpose.Stream = (AudioStream)GD.Load("res://Audio/locked.mp3");
+								allPurpose.Play();
+								GetNode<informative>("/root/Root/CanvasLayer/Informative").Inform("It got stuck when I slammed it");
 							}
 						}
 						catch
@@ -485,25 +490,10 @@ public partial class perspective_raycast : RayCast3D
 			{
 				try
 				{
-					apple coll = (apple)GetCollider();
-					if (sequencer.seqNum == 7)
+					math_door coll = (math_door)GetCollider();
+					if (sequencer.seqNum >= 8)
 					{
-						sequencer.seqNum++;
-						sequencer.nextSeq = true;
-					} else if (allow) {
-						toCarry = coll;
-						toCarry.Freeze = true;
-						Except(true);
-						carry = true;
-						toCarry.ContactMonitor = true;
-						GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
-					}		
-				}
-				catch
-				{
-					try
-					{
-						RigidBody3D coll = (RigidBody3D)GetCollider();
+						coll.Freeze = false;
 						toCarry = coll;
 						toCarry.Freeze = true;
 						Except(true);
@@ -511,32 +501,67 @@ public partial class perspective_raycast : RayCast3D
 						toCarry.ContactMonitor = true;
 						GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
 					}
+				}
+				catch
+				{
+					try
+					{
+						apple coll = (apple)GetCollider();
+						if (sequencer.seqNum == 7)
+						{
+							allow = false;
+							sequencer.seqNum++;
+							sequencer.nextSeq = true;
+						}
+						else if (allow)
+						{
+							toCarry = coll;
+							toCarry.Freeze = true;
+							Except(true);
+							carry = true;
+							toCarry.ContactMonitor = true;
+							GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
+						}
+					}
 					catch
 					{
 						try
 						{
-							portal port = (portal)GetCollider();
+							RigidBody3D coll = (RigidBody3D)GetCollider();
+							toCarry = coll;
+							toCarry.Freeze = true;
+							Except(true);
+							carry = true;
+							toCarry.ContactMonitor = true;
+							GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
+						}
+						catch
+						{
 							try
 							{
-								after = port.Recalculate(this);
-								if (!excepted.Contains(after)) excepted.Add(after);
-								RigidBody3D coll = (RigidBody3D)after.GetCollider();
-								toCarry = coll;
-								after.AddException(toCarry);
-								toCarry.Freeze = true;
-								Except(true);
-								carry = true;
-								toCarry.ContactMonitor = true;
-								GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
+								portal port = (portal)GetCollider();
+								try
+								{
+									after = port.Recalculate(this);
+									if (!excepted.Contains(after)) excepted.Add(after);
+									RigidBody3D coll = (RigidBody3D)after.GetCollider();
+									toCarry = coll;
+									after.AddException(toCarry);
+									toCarry.Freeze = true;
+									Except(true);
+									carry = true;
+									toCarry.ContactMonitor = true;
+									GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
+								}
+								catch
+								{
+
+								}
 							}
 							catch
 							{
 
 							}
-						}
-						catch
-						{
-
 						}
 					}
 				}
