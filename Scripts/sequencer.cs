@@ -105,7 +105,7 @@ public partial class sequencer : Node
 					subtitleArray = new string[800];
 					subtitleArray[180] = "Wow, it's giant!!";
 					subtitleArray[399] = "So it can change scale of things...";
-					subtitleArray[599] = "Maybe I could crush that ghost with something large";
+					subtitleArray[599] = "Maybe I could shrink the ghost so it can't hurt me";
 					subtitleArray[799] = " ";
 					time = 0;
 					break;
@@ -117,12 +117,19 @@ public partial class sequencer : Node
 					time = 0;
 					break;
 				case 10:
-					subtitleArray = new string[1000];
+					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_10");
+					GetNode<AnimationPlayer>("/root/Root/CapeHolder/GhostCape/GhostAnimation").Play("ghost_3");
+					subtitleArray = new string[600];
 					subtitleArray[0] = "There you are!";
 					subtitleArray[299] = "Say goodbye!";
-					subtitleArray[599] = "IT DID NOTHING!!!!";
-					subtitleArray[799] = "I have to run through the double door, theres no other way";
-					subtitleArray[999] = " ";
+					subtitleArray[599] = " ";
+					time = 0;
+					break;
+				case 11:
+					subtitleArray = new string[1000];
+					subtitleArray[0] = "IT DID NOTHING!!!!";
+					subtitleArray[199] = "I have to run through the double door, theres no other way";
+					subtitleArray[399] = " ";
 					time = 0;
 					break;
 			}

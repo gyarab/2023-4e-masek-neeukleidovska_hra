@@ -326,7 +326,15 @@ public partial class perspective_raycast : RayCast3D
 										}
 										catch
 										{
-											GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+											try
+											{
+												ghost_collider ghost_collider = (ghost_collider)GetCollider();
+												GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand.png");
+											}
+											catch
+											{
+												GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+											}
 										}
 									}
 								}
@@ -560,7 +568,18 @@ public partial class perspective_raycast : RayCast3D
 							}
 							catch
 							{
+								try
+								{
+									ghost_collider ghost_collider = (ghost_collider)GetCollider();
+									if (sequencer.seqNum == 10) {
+										sequencer.seqNum++;
+										sequencer.nextSeq = true;
+									}
+								}
+								catch
+								{
 
+								}
 							}
 						}
 					}
