@@ -66,6 +66,9 @@ public partial class sequencer : Node
 					time = 0;
 					break;
 				case 4:
+					conv_door conv_door = GetNode<conv_door>("/root/Root/Hallway/Doors/DoorHolder5/Door14");
+					conv_door.open = false;
+					conv_door.GetNode<AnimationPlayer>("AnimationPlayer").Play("close");
 					subtitleArray = new string[650];
 					subtitleArray[99] = "Woah what the hell is that?!!";
 					subtitleArray[349] = "Is that thing moving?";
@@ -119,17 +122,73 @@ public partial class sequencer : Node
 				case 10:
 					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_10");
 					GetNode<AnimationPlayer>("/root/Root/CapeHolder/GhostCape/GhostAnimation").Play("ghost_3");
-					subtitleArray = new string[600];
-					subtitleArray[0] = "There you are!";
-					subtitleArray[299] = "Say goodbye!";
-					subtitleArray[599] = " ";
+					subtitleArray = new string[1];
+					subtitleArray[0] = "There you are, say goodbye!";
 					time = 0;
 					break;
 				case 11:
-					subtitleArray = new string[1000];
-					subtitleArray[0] = "IT DID NOTHING!!!!";
-					subtitleArray[199] = "I have to run through the double door, theres no other way";
+					subtitleArray = new string[400];
+					subtitleArray[0] = "IT DID NOTHING!!!! I have to run through the double door, theres no other way";
+					subtitleArray[199] = " ";
+					time = 0;
+					break;
+				case 12:
+					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_11");
+					//GetNode<AnimationPlayer>("/root/Root/CapeHolder/GhostCape/GhostAnimation").Play("ghost_3");
+					subtitleArray = new string[600];
+					subtitleArray[0] = "Arrgh!";
+					subtitleArray[199] = "NOO, I'm stuck in a loop";
+					subtitleArray[399] = "Let's try the toilet door";
+					subtitleArray[599] = " ";
+					time = 0;
+					break;
+				case 13:
+					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_12");
+					//GetNode<AnimationPlayer>("/root/Root/CapeHolder/GhostCape/GhostAnimation").Play("ghost_3");
+					subtitleArray = new string[400];
+					subtitleArray[0] = "What?! It's still the same";
+					subtitleArray[199] = "Okay new plan, lets overload the gun and try shooting it again";
 					subtitleArray[399] = " ";
+					time = 0;
+					break;
+				case 14:
+					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_13");
+					//GetNode<AnimationPlayer>("/root/Root/CapeHolder/GhostCape/GhostAnimation").Play("ghost_3");
+					subtitleArray = new string[500];
+					subtitleArray[0] = "Lets get the power going";
+					subtitleArray[299] = "Eat this!";
+					subtitleArray[499] = " ";
+					time = 0;
+					break;
+				case 15:
+					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_14");
+					GetNode<Sprite2D>("/root/Root/CanvasLayer/Control2/Manipulator").Visible = false;
+					Node3D manipulator = GetNode<Node3D>("/root/Root/Manipulator");
+					manipulator.Visible = true;
+					//Vector3 tmp = manipulator.GlobalPosition;
+					//manipulator.GetParent().RemoveChild(manipulator);
+					//GetNode<Node3D>("/root/Root").AddChild(manipulator);
+					//manipulator.GlobalPosition = tmp;
+					//GetNode<AnimationPlayer>("/root/Root/CapeHolder/GhostCape/GhostAnimation").Play("ghost_3");
+					subtitleArray = new string[200];
+					subtitleArray[0] = "Aw shit.....SHIT";
+					subtitleArray[199] = " ";
+					time = 0;
+					break;
+				case 16:
+					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_15");
+					subtitles = GetNode<subtitles>("/root/Root/CanvasLayer/Subtitles");
+					informative = GetNode<informative>("/root/Root/CanvasLayer/Informative");
+					subtitleArray = new string[2400];
+					subtitleArray[0] = "Where am I...";
+					subtitleArray[599] = "Woah woah......";
+					subtitleArray[749] = "why are you not attacking me?";
+					subtitleArray[999] = "I get it now...I never woke up, did I?";
+					subtitleArray[1299] = "I'm slowly going crazy from all the pressure and I know that is what you want";
+					subtitleArray[1599] = "But now it's all done....";
+					subtitleArray[1799] = "the books, the exams, this GAME....it is all finished!";
+					subtitleArray[2099] = "You are free to go now my friend.....";
+					subtitleArray[2399] = " ";
 					time = 0;
 					break;
 			}
@@ -155,8 +214,18 @@ public partial class sequencer : Node
 					GetNode<AnimationPlayer>("/root/Root/CapeHolder/GhostCape/GhostAnimation").Play("ghost_1");
 					GetNode<AudioStreamPlayer3D>("/root/Root/CapeHolder/GhostCape/AudioStreamPlayer3D").Play();
 					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_4");
+					GetNode<CsgBox3D>("/root/Root/HallwayBot/Walls/Wall32").UseCollision = true;
 					seqNum++;
 					nextSeq = true;
+				}
+				else if (floors == 0)
+				{
+					Vector3 tmp = player.GlobalPosition;
+					tmp.Y += 3.4f;
+					player.GlobalPosition = tmp;
+					if (floors == 1) GetNode<Node3D>("/root/Root/CapeHolder").Visible = true;
+					floors++;
+					informative.Inform("I thought I was on the first floor");
 				}
 				else
 				{
@@ -165,6 +234,7 @@ public partial class sequencer : Node
 					player.GlobalPosition = tmp;
 					if (floors == 1) GetNode<Node3D>("/root/Root/CapeHolder").Visible = true;
 					floors++;
+					informative.Inform("Is this still the same floor?");
 				}
 			}
 			else if (player.GlobalPosition.Y > 2.72)
@@ -197,10 +267,13 @@ public partial class sequencer : Node
 		{
 			Node3D manipulator = GetNode<Node3D>("/root/Root/Math/Manipulator");
 			Transform3D tmp = manipulator.GlobalTransform;
-			manipulator.GetParent().RemoveChild(manipulator);
-			GetNode<Node3D>("/root/Root/CharacterBody3D/CameraRig").AddChild(manipulator);
-			manipulator.GlobalTransform = tmp;
+			//manipulator.GetParent().RemoveChild(manipulator);
+			//GetNode<Node3D>("/root/Root/CharacterBody3D/CameraRig").AddChild(manipulator);
+			//manipulator.GlobalTransform = tmp;
 			manipulator.GetNode<CsgBox3D>("Collider").UseCollision = false;
+			manipulator.Visible = false;
+			//GetNode<Node3D>("/root/Root/CharacterBody3D/Manipulator").GlobalPosition = manipulator.GlobalPosition;
+			GetNode<Sprite2D>("/root/Root/CanvasLayer/Control2/Manipulator").Visible = true;
 			informative.Inform("Use [RMB] to pick up");
 		}
 		else if (seqNum == 8 && time == 59)
@@ -213,8 +286,15 @@ public partial class sequencer : Node
 			perspective_raycast.Grab();
 			perspective_raycast.allow = true;
 		}
+		else if (seqNum == 15 && time == 419)
+		{
+			GetTree().ChangeSceneToFile("res://Scenes/void.tscn");
+			seqNum++;
+			nextSeq = true;
+		}
 
-		if (seqNum == 8 && GetNode<CharacterBody3D>("/root/Root/CharacterBody3D").GlobalPosition.X < 3.97) {
+		if (seqNum == 8 && GetNode<CharacterBody3D>("/root/Root/CharacterBody3D").GlobalPosition.X < 3.97)
+		{
 			seqNum++;
 			nextSeq = true;
 		}

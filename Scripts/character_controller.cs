@@ -39,7 +39,7 @@ public partial class character_controller : CharacterBody3D
 			Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 			if (IsOnFloor())
 			{
-				if (direction != Vector3.Zero)
+				if (direction != Vector3.Zero && (!GetNode<AnimationPlayer>("PlayerAnimator").IsPlaying() || GetNode<sequencer>("/root/Sequencer").seqNum == 13))
 				{
 					if (Input.IsActionPressed("ui_sprint") && GetNode<sequencer>("/root/Sequencer").seqNum > 3)
 					{
@@ -61,7 +61,7 @@ public partial class character_controller : CharacterBody3D
 					velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
 				}
 			}
-			else if (direction != Vector3.Zero)
+			else if (direction != Vector3.Zero && (!GetNode<AnimationPlayer>("PlayerAnimator").IsPlaying() || GetNode<sequencer>("/root/Sequencer").seqNum == 13))
 			{
 				velocity.X = Mathf.MoveToward(Velocity.X, direction.X * Speed, Speed / 20);
 				velocity.Z = Mathf.MoveToward(Velocity.Z, direction.Z * Speed, Speed / 20);
@@ -131,7 +131,7 @@ public partial class character_controller : CharacterBody3D
 
 	public override void _Input(InputEvent @event)
 	{
-		if (@event is InputEventMouseMotion mouseEvent)
+		if (@event is InputEventMouseMotion mouseEvent && (!GetNode<AnimationPlayer>("PlayerAnimator").IsPlaying() || GetNode<sequencer>("/root/Sequencer").seqNum == 13))
 		{
 			Vector2 mouseDelta = mouseEvent.Relative;
 			float rotationSpeedX = 0.006f;

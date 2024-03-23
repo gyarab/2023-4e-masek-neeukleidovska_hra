@@ -297,7 +297,7 @@ public partial class perspective_raycast : RayCast3D
 							try
 							{
 								locked_doubledoor locked_doubledoor = (locked_doubledoor)GetCollider();
-								if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1.5 && sequencer.seqNum == 4) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
+								if ((GetCollisionPoint().DistanceTo(GlobalPosition) < 1.5 && sequencer.seqNum == 4) || (GetCollisionPoint().DistanceTo(GlobalPosition) < 2 && sequencer.seqNum == 11 && Input.IsActionPressed("ui_sprint"))) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
 								else GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
 							}
 							catch
@@ -305,7 +305,7 @@ public partial class perspective_raycast : RayCast3D
 								try
 								{
 									locked_door locked_door = (locked_door)GetCollider();
-									if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1 && sequencer.seqNum == 5) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
+									if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
 									else GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
 								}
 								catch
@@ -333,7 +333,34 @@ public partial class perspective_raycast : RayCast3D
 											}
 											catch
 											{
-												GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+												try
+												{
+													toilet_door toilet_door = (toilet_door)GetCollider();
+													if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1.5 && sequencer.seqNum == 12) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
+													else GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+												}
+												catch
+												{
+													try
+													{
+														conv_door conv_door = (conv_door)GetCollider();
+														if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1.5 && sequencer.seqNum < 4) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
+														else GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+													}
+													catch
+													{
+														try
+														{
+															breakers breakers = (breakers)GetCollider();
+															if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1.5 && sequencer.seqNum == 13) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
+															else GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+														}
+														catch
+														{
+															GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
+														}
+													}
+												}
 											}
 										}
 									}
@@ -410,7 +437,7 @@ public partial class perspective_raycast : RayCast3D
 				try
 				{
 					locked_doubledoor locked_doubledoor = (locked_doubledoor)GetCollider();
-					if (sequencer.seqNum == 4 && GetCollisionPoint().DistanceTo(GlobalPosition) < 1.5)
+					if ((sequencer.seqNum == 4 && GetCollisionPoint().DistanceTo(GlobalPosition) < 1.5) || (sequencer.seqNum == 11 && GetCollisionPoint().DistanceTo(GlobalPosition) < 2 && Input.IsActionPressed("ui_sprint")))
 					{
 						sequencer.seqNum++;
 						sequencer.nextSeq = true;
@@ -421,7 +448,7 @@ public partial class perspective_raycast : RayCast3D
 					try
 					{
 						locked_door locked_door = (locked_door)GetCollider();
-						if (sequencer.seqNum == 5 && GetCollisionPoint().DistanceTo(GlobalPosition) < 1)
+						if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1)
 						{
 							AudioStreamPlayer allPurpose = GetNode<AudioStreamPlayer>("/root/Root/CharacterBody3D/AllPurpose");
 							allPurpose.Stream = (AudioStream)GD.Load("res://Audio/locked.mp3");
@@ -460,7 +487,51 @@ public partial class perspective_raycast : RayCast3D
 							}
 							catch
 							{
+								try
+								{
+									toilet_door toilet_door = (toilet_door)GetCollider();
+									if (sequencer.seqNum == 12 && GetCollisionPoint().DistanceTo(GlobalPosition) < 1.5)
+									{
+										sequencer.seqNum++;
+										sequencer.nextSeq = true;
+									}
+								}
+								catch
+								{
+									try
+									{
+										conv_door conv_door = (conv_door)GetCollider();
+										if (sequencer.seqNum < 4 && GetCollisionPoint().DistanceTo(GlobalPosition) < 1.5)
+										{
+											if (conv_door.open)
+											{
+												conv_door.GetNode<AnimationPlayer>("AnimationPlayer").Play("close");
+												conv_door.open = false;
+											}
+											else
+											{
+												conv_door.GetNode<AnimationPlayer>("AnimationPlayer").Play("open");
+												conv_door.open = true;
+											}
+										}
+									}
+									catch
+									{
+										try
+										{
+											breakers breakers = (breakers)GetCollider();
+											if (sequencer.seqNum == 13)
+											{
+												sequencer.seqNum++;
+												sequencer.nextSeq = true;
+											}
+										}
+										catch
+										{
 
+										}
+									}
+								}
 							}
 						}
 					}
@@ -571,7 +642,8 @@ public partial class perspective_raycast : RayCast3D
 								try
 								{
 									ghost_collider ghost_collider = (ghost_collider)GetCollider();
-									if (sequencer.seqNum == 10) {
+									if (sequencer.seqNum == 10 || sequencer.seqNum == 14)
+									{
 										sequencer.seqNum++;
 										sequencer.nextSeq = true;
 									}

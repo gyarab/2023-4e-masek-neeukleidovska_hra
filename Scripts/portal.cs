@@ -8,7 +8,7 @@ public partial class portal : CsgBox3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		z = GetNode<Node3D>("SubViewport/Camera3D").GlobalPosition.Z - GlobalPosition.Z; 
+		z = GetNode<Node3D>("SubViewport/CameraRig").GlobalPosition.Z - GlobalPosition.Z; 
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -20,18 +20,19 @@ public partial class portal : CsgBox3D
     {
         var player = GetNode<Node3D>("/root/Root/CharacterBody3D/CameraRig");
 		var playerBody = GetNode<CharacterBody3D>("/root/Root/CharacterBody3D");
-		var camera = GetNode<Node3D>("SubViewport/Camera3D");
+		var camera = GetNode<Node3D>("SubViewport/CameraRig/Camera3D");
+		var cameraRig = GetNode<Node3D>("SubViewport/CameraRig");
 		var subViewport = GetNode<SubViewport>("SubViewport");
-		subViewport.Size = GetViewport().GetWindow().Size;
+		subViewport.Size = new Vector2I(GetViewport().GetWindow().Size.X / 2, GetViewport().GetWindow().Size.Y / 2);
 		camera.GlobalRotationDegrees = new Vector3(player.GlobalRotationDegrees.X, player.GlobalRotationDegrees.Y + 180, 0);
-		camera.GlobalPosition = new Vector3(GlobalPosition.X - 0.1f - (player.GlobalPosition.X - GlobalPosition.X + 0.1f), player.GlobalPosition.Y, GlobalPosition.Z - (player.GlobalPosition.Z - GlobalPosition.Z) + z);
-		if (player.GlobalPosition.X /*+ 0.1*/ > camera.GlobalPosition.X && player.GlobalPosition.Z < GlobalPosition.Z + Size.Z / 2 && player.GlobalPosition.Z > GlobalPosition.Z - Size.Z / 2) {
-			Vector3 tmp = camera.GlobalPosition;
+		cameraRig.GlobalPosition = new Vector3(GlobalPosition.X - 0.1f - (player.GlobalPosition.X - GlobalPosition.X + 0.1f), player.GlobalPosition.Y, GlobalPosition.Z - (player.GlobalPosition.Z - GlobalPosition.Z) + z);
+		if (player.GlobalPosition.X /*+ 0.1*/ > cameraRig.GlobalPosition.X && player.GlobalPosition.Z < GlobalPosition.Z + Size.Z / 2 && player.GlobalPosition.Z > GlobalPosition.Z - Size.Z / 2) {
+			Vector3 tmp = cameraRig.GlobalPosition;
 			tmp.Y -= 0.5f;
 			Vector3 playerTemp = player.GlobalPosition;
 			//tmp.X -= 0.01f;
 			playerBody.GlobalPosition = tmp;
-			camera.GlobalPosition = playerTemp;
+			cameraRig.GlobalPosition = playerTemp;
 			playerBody.Velocity = new Vector3(-playerBody.Velocity.X, playerBody.Velocity.Y, -playerBody.Velocity.Z);
 			Vector3 rot = playerBody.GlobalRotationDegrees;
 			rot.Y += 180;

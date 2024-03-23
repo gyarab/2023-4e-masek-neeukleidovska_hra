@@ -22,7 +22,7 @@ public partial class portal_hall : CsgBox3D
 		var playerBody = GetNode<CharacterBody3D>("/root/Root/CharacterBody3D");
 		var camera = GetNode<Node3D>("SubViewport/Camera3D");
 		var subViewport = GetNode<SubViewport>("SubViewport");
-		subViewport.Size = GetViewport().GetWindow().Size;
+		subViewport.Size = new Vector2I(GetViewport().GetWindow().Size.X / 2, GetViewport().GetWindow().Size.Y / 2);
 		camera.GlobalRotationDegrees = player.GlobalRotationDegrees;
 		camera.GlobalPosition = new Vector3(player.GlobalPosition.X, player.GlobalPosition.Y, GlobalPosition.Z + (player.GlobalPosition.Z - GlobalPosition.Z) + z);
 		/*if (player.GlobalPosition.X > camera.GlobalPosition.X && player.GlobalPosition.Z < GlobalPosition.Z + Size.Z / 2 && player.GlobalPosition.Z > GlobalPosition.Z - Size.Z / 2) {

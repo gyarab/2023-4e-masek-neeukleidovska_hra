@@ -1,0 +1,12 @@
+# Blender 4.0.2 MTL File: 'None'
+# www.blender.org
+
+newmtl Meshesleverbase1Mtl
+Ns 8.999994
+Ka 1.000000 1.000000 1.000000
+Ks 0.400000 0.400000 0.400000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd Meshesleverbase1Tex.png
+map_d Meshesleverbase1Tex.png
