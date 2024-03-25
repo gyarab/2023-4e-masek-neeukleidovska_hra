@@ -11,7 +11,7 @@ public partial class sequencer : Node
 	int time = 0;
 	subtitles subtitles;
 	informative informative;
-	byte floors = 0;
+	public byte floors = 0;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -56,7 +56,9 @@ public partial class sequencer : Node
 				case 3:
 					subtitles = GetNode<subtitles>("/root/Root/CanvasLayer/Subtitles");
 					informative = GetNode<informative>("/root/Root/CanvasLayer/Informative");
+					GetNode<AudioStreamPlayer3D>("/root/Root/Hallway/Windows/Window2/CSGBox3D/Thunder").Play();
 					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_3");
+					GetNode<AnimationPlayer>("/root/Root/WorldEnvironment/Lightning/AnimationPlayer").Play("lightning");
 					GetNode<Sprite2D>("/root/Root/CanvasLayer/Fader").Modulate = new Godot.Color(0, 0, 0, 0);
 					subtitleArray = new string[700];
 					subtitleArray[0] = "What the hell was that?! Why is it dark outside?";
@@ -89,6 +91,8 @@ public partial class sequencer : Node
 				case 6:
 					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_6");
 					GetNode<AudioStreamPlayer3D>("/root/Root/CapeHolder/GhostCape/AudioStreamPlayer3D").Stop();
+					GetNode<music>("/root/Music").Stream = (AudioStream)GD.Load("res://Audio/horrorend.mp3");
+					GetNode<music>("/root/Music").Play();
 					subtitleArray = new string[400];
 					subtitleArray[129] = "Where the hell am I??? This isn't my school, not with THAT THING!";
 					subtitleArray[399] = " ";
@@ -123,11 +127,15 @@ public partial class sequencer : Node
 				case 10:
 					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_10");
 					GetNode<AnimationPlayer>("/root/Root/CapeHolder/GhostCape/GhostAnimation").Play("ghost_3");
+					GetNode<AudioStreamPlayer3D>("/root/Root/CapeHolder/GhostCape/AudioStreamPlayer3D").Stream = (AudioStream)GD.Load("res://Audio/chase.mp3");
+					GetNode<AudioStreamPlayer3D>("/root/Root/CapeHolder/GhostCape/AudioStreamPlayer3D").Play();
 					subtitleArray = new string[1];
 					subtitleArray[0] = "There you are, say goodbye!";
 					time = 0;
 					break;
 				case 11:
+					GetNode<music>("/root/Music").Stream = (AudioStream)GD.Load("res://Audio/horror3.mp3");
+					GetNode<music>("/root/Music").Play();
 					subtitleArray = new string[400];
 					subtitleArray[0] = "IT DID NOTHING!!!! I have to run through the double door, theres no other way";
 					subtitleArray[199] = " ";
@@ -177,6 +185,8 @@ public partial class sequencer : Node
 					time = 0;
 					break;
 				case 16:
+					GetNode<music>("/root/Music").Stream = (AudioStream)GD.Load("res://Audio/end.mp3");
+					GetNode<music>("/root/Music").Play();
 					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_15");
 					subtitles = GetNode<subtitles>("/root/Root/CanvasLayer/Subtitles");
 					informative = GetNode<informative>("/root/Root/CanvasLayer/Informative");
@@ -245,12 +255,28 @@ public partial class sequencer : Node
 				player.GlobalPosition = tmp;
 			}
 		}
+		else if (seqNum == 4 && time == 399)
+		{
+			GetNode<music>("/root/Music").Stream = (AudioStream)GD.Load("res://Audio/horror1.mp3");
+			GetNode<music>("/root/Music").Play();
+
+		}
 		else if (seqNum == 4 && time == 599) informative.Inform("Use [SHIFT] to sprint");
-		else if (seqNum == 5 && time == 59) GetNode<AudioStreamPlayer3D>("/root/Root/Hallway/Doors/DoubleDoor1/CSGBox3D/AudioStreamPlayer3D").Play();
+		else if (seqNum == 5 && time == 59)
+		{
+			GetNode<AudioStreamPlayer3D>("/root/Root/Hallway/Doors/DoubleDoor1/CSGBox3D/AudioStreamPlayer3D").Play();
+		}
+		else if (seqNum == 5 && time == 109)
+		{
+			GetNode<music>("/root/Music").VolumeDb = -20;
+		}
 		else if (seqNum == 5 && time == 299)
 		{
-			GetNode<AudioStreamPlayer3D>("/root/Root/Hallway/Doors/DoubleDoor1/CSGBox3D/AudioStreamPlayer3D").Stream = (AudioStream)GD.Load("res://Audio/chase.mp3");
-			GetNode<AudioStreamPlayer3D>("/root/Root/Hallway/Doors/DoubleDoor1/CSGBox3D/AudioStreamPlayer3D").Play();
+			GetNode<AudioStreamPlayer3D>("/root/Root/CapeHolder/GhostCape/AudioStreamPlayer3D").Stream = (AudioStream)GD.Load("res://Audio/chase.mp3");
+			GetNode<AudioStreamPlayer3D>("/root/Root/CapeHolder/GhostCape/AudioStreamPlayer3D").Play();
+			GetNode<music>("/root/Music").VolumeDb = -10;
+			GetNode<music>("/root/Music").Stream = (AudioStream)GD.Load("res://Audio/horror2.mp3");
+			GetNode<music>("/root/Music").Play();
 		}
 		else if (seqNum == 6 && time == 29)
 		{
@@ -280,19 +306,30 @@ public partial class sequencer : Node
 		else if (seqNum == 8 && time == 59)
 		{
 			GetNode<perspective_raycast>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter").Grab();
+			GetNode<AnimationPlayer>("/root/Root/CanvasLayer/ManipulatorAnimation").Play("shoot");
+			GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Stream = (AudioStream)GD.Load("res://Audio/pickup.mp3");
+			GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Play();
 		}
 		else if (seqNum == 8 && time == 210)
 		{
 			perspective_raycast perspective_raycast = GetNode<perspective_raycast>("/root/Root/CharacterBody3D/CameraRig/RayCastCenter");
 			perspective_raycast.Grab();
+			GetNode<AnimationPlayer>("/root/Root/CanvasLayer/ManipulatorAnimation").Play("shoot");
+			GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Stream = (AudioStream)GD.Load("res://Audio/letgo.mp3");
+			GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Play();
 			perspective_raycast.allow = true;
+		}
+		else if (seqNum == 15 && time == 200)
+		{
+			GetNode<music>("/root/Music").Stream = (AudioStream)GD.Load("res://Audio/ring.mp3");
+			GetNode<music>("/root/Music").Play();
 		}
 		else if (seqNum == 15 && time == 419)
 		{
 			GetTree().ChangeSceneToFile("res://Scenes/void.tscn");
 			seqNum++;
-			nextSeq = true;
-		} else if (seqNum == 16 && time == 3099) GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
+		}
+		else if (seqNum == 16 && time == 3019) GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
 
 		if (seqNum == 8 && GetNode<CharacterBody3D>("/root/Root/CharacterBody3D").GlobalPosition.X < 3.97)
 		{

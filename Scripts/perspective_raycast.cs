@@ -564,6 +564,9 @@ public partial class perspective_raycast : RayCast3D
 					toCarry.ContactMonitor = false;
 					if (after != null) after.ClearExceptions();
 				}
+				GetNode<AnimationPlayer>("/root/Root/CanvasLayer/ManipulatorAnimation").Play("shoot");
+				GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Stream = (AudioStream)GD.Load("res://Audio/letgo.mp3");
+				GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Play();
 			}
 			else if (IsColliding())
 			{
@@ -579,6 +582,9 @@ public partial class perspective_raycast : RayCast3D
 						carry = true;
 						toCarry.ContactMonitor = true;
 						GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
+						GetNode<AnimationPlayer>("/root/Root/CanvasLayer/ManipulatorAnimation").Play("shoot");
+						GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Stream = (AudioStream)GD.Load("res://Audio/pickup.mp3");
+						GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Play();
 					}
 				}
 				catch
@@ -600,6 +606,9 @@ public partial class perspective_raycast : RayCast3D
 							carry = true;
 							toCarry.ContactMonitor = true;
 							GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
+							GetNode<AnimationPlayer>("/root/Root/CanvasLayer/ManipulatorAnimation").Play("shoot");
+							GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Stream = (AudioStream)GD.Load("res://Audio/pickup.mp3");
+							GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Play();
 						}
 					}
 					catch
@@ -613,6 +622,9 @@ public partial class perspective_raycast : RayCast3D
 							carry = true;
 							toCarry.ContactMonitor = true;
 							GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
+							GetNode<AnimationPlayer>("/root/Root/CanvasLayer/ManipulatorAnimation").Play("shoot");
+							GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Stream = (AudioStream)GD.Load("res://Audio/pickup.mp3");
+							GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Play();
 						}
 						catch
 						{
@@ -631,6 +643,9 @@ public partial class perspective_raycast : RayCast3D
 									carry = true;
 									toCarry.ContactMonitor = true;
 									GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/hand_hold.png");
+									GetNode<AnimationPlayer>("/root/Root/CanvasLayer/ManipulatorAnimation").Play("shoot");
+									GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Stream = (AudioStream)GD.Load("res://Audio/pickup.mp3");
+									GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Play();
 								}
 								catch
 								{
@@ -646,6 +661,9 @@ public partial class perspective_raycast : RayCast3D
 									{
 										sequencer.seqNum++;
 										sequencer.nextSeq = true;
+										GetNode<AnimationPlayer>("/root/Root/CanvasLayer/ManipulatorAnimation").Play("shoot");
+										GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Stream = (AudioStream)GD.Load("res://Audio/pickup.mp3");
+										GetNode<AudioStreamPlayer>("/root/Root/CanvasLayer/ManipulatorAudio").Play();
 									}
 								}
 								catch
