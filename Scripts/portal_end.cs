@@ -8,7 +8,7 @@ public partial class portal_end : CsgBox3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		z = GetNode<Node3D>("SubViewport/Camera3D").GlobalPosition.Z - GlobalPosition.Z; 
+		z = GetNode<Node3D>("SubViewport/Camera3D").GlobalPosition.Z - GlobalPosition.Z;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -16,16 +16,21 @@ public partial class portal_end : CsgBox3D
 	{
 	}
 
-    public override void _PhysicsProcess(double delta)
-    {
-        var player = GetNode<Node3D>("/root/Root/CharacterBody3D/CameraRig");
+	public override void _PhysicsProcess(double delta)
+	{
+		var player = GetNode<Node3D>("/root/Root/CharacterBody3D/CameraRig");
 		var playerBody = GetNode<CharacterBody3D>("/root/Root/CharacterBody3D");
 		var camera = GetNode<Node3D>("SubViewport/Camera3D");
 		var subViewport = GetNode<SubViewport>("SubViewport");
+		var ghost = GetNode<chase>("/root/Root/CapeHolder");
 		subViewport.Size = new Vector2I(GetViewport().GetWindow().Size.X / 2, GetViewport().GetWindow().Size.Y / 2);
 		camera.GlobalRotationDegrees = player.GlobalRotationDegrees;
 		camera.GlobalPosition = new Vector3(player.GlobalPosition.X, player.GlobalPosition.Y, GlobalPosition.Z + (player.GlobalPosition.Z - GlobalPosition.Z) + z);
-		if (player.GlobalPosition.Z < GlobalPosition.Z + 0.1) playerBody.GlobalPosition = new Vector3(playerBody.GlobalPosition.X, playerBody.GlobalPosition.Y, playerBody.GlobalPosition.Z - 0.2f + camera.GlobalPosition.DistanceTo(player.GlobalPosition) / 2);
+		if (player.GlobalPosition.Z < GlobalPosition.Z + 0.1)
+		{
+			ghost.GlobalPosition = new Vector3(ghost.GlobalPosition.X, ghost.GlobalPosition.Y, ghost.GlobalPosition.Z - 0.2f + camera.GlobalPosition.DistanceTo(player.GlobalPosition) / 2);
+			playerBody.GlobalPosition = new Vector3(playerBody.GlobalPosition.X, playerBody.GlobalPosition.Y, playerBody.GlobalPosition.Z - 0.2f + camera.GlobalPosition.DistanceTo(player.GlobalPosition) / 2);
+		}
 		/*if (player.GlobalPosition.X > camera.GlobalPosition.X && player.GlobalPosition.Z < GlobalPosition.Z + Size.Z / 2 && player.GlobalPosition.Z > GlobalPosition.Z - Size.Z / 2) {
 			Vector3 tmp = camera.GlobalPosition;
 			tmp.Y -= 0.5f;

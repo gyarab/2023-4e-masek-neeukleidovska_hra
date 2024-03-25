@@ -58,11 +58,12 @@ public partial class sequencer : Node
 					informative = GetNode<informative>("/root/Root/CanvasLayer/Informative");
 					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_3");
 					GetNode<Sprite2D>("/root/Root/CanvasLayer/Fader").Modulate = new Godot.Color(0, 0, 0, 0);
-					subtitleArray = new string[500];
+					subtitleArray = new string[700];
 					subtitleArray[0] = "What the hell was that?! Why is it dark outside?";
 					subtitleArray[199] = "Did I sleep through the whole day? No wayy!";
 					subtitleArray[349] = "I have to get the hell out of here";
-					subtitleArray[499] = " ";
+					subtitleArray[499] = "The exit is on the ground floor";
+					subtitleArray[699] = " ";
 					time = 0;
 					break;
 				case 4:
@@ -179,16 +180,16 @@ public partial class sequencer : Node
 					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_15");
 					subtitles = GetNode<subtitles>("/root/Root/CanvasLayer/Subtitles");
 					informative = GetNode<informative>("/root/Root/CanvasLayer/Informative");
-					subtitleArray = new string[2400];
+					subtitleArray = new string[2800];
 					subtitleArray[0] = "Where am I...";
-					subtitleArray[599] = "Woah woah......";
-					subtitleArray[749] = "why are you not attacking me?";
+					subtitleArray[549] = "Woah woah......";
+					subtitleArray[699] = "why are you not attacking me?";
 					subtitleArray[999] = "I get it now...I never woke up, did I?";
-					subtitleArray[1299] = "I'm slowly going crazy from all the pressure and I know that is what you want";
-					subtitleArray[1599] = "But now it's all done....";
-					subtitleArray[1799] = "the books, the exams, this GAME....it is all finished!";
-					subtitleArray[2099] = "You are free to go now my friend.....";
-					subtitleArray[2399] = " ";
+					subtitleArray[1399] = "We're inside my head and I'm slowly going crazy from all the pressure";
+					subtitleArray[1899] = "But now it's all done....";
+					subtitleArray[2199] = "the books, the exams, this GAME....it is all finished!";
+					subtitleArray[2499] = "You are free to go now old friend.....";
+					subtitleArray[2799] = " ";
 					time = 0;
 					break;
 			}
@@ -291,7 +292,7 @@ public partial class sequencer : Node
 			GetTree().ChangeSceneToFile("res://Scenes/void.tscn");
 			seqNum++;
 			nextSeq = true;
-		}
+		} else if (seqNum == 16 && time == 3099) GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
 
 		if (seqNum == 8 && GetNode<CharacterBody3D>("/root/Root/CharacterBody3D").GlobalPosition.X < 3.97)
 		{

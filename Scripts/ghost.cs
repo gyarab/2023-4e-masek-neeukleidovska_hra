@@ -20,11 +20,21 @@ public partial class ghost : MeshInstance3D
 			runtime = true;
 		}
 
+		if (GetNode<sequencer>("/root/Sequencer").seqNum >= 11 && GetNode<sequencer>("/root/Sequencer").seqNum <= 14 && GlobalPosition.DistanceTo(GetNode<CharacterBody3D>("/root/Root/CharacterBody3D/").GlobalPosition) < 3 && !runtime)
+		{
+			GetNode<sequencer>("/root/Sequencer").seqNum = 10;
+			GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
+			GetNode<MeshInstance3D>("/root/Root/Hallway/Doors/DoubleDoor1").Visible = true;
+			GetNode<CsgBox3D>("/root/Root/Hallway/Doors/DoubleDoor1/CSGBox3D").UseCollision = true;
+			runtime = true;
+		}
+
 		if (runtime) time++;
 
 		if (time == 150) {
 			runtime = false;
 			GetNode<sequencer>("/root/Sequencer").nextSeq = true;
+			GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_out");
 			time = 0;
 		}
 	}

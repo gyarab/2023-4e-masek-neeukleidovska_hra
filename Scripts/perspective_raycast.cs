@@ -313,7 +313,7 @@ public partial class perspective_raycast : RayCast3D
 									try
 									{
 										math_door math_door = (math_door)GetCollider();
-										if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1 && (sequencer.seqNum == 5 | sequencer.seqNum == 8)) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
+										if (GetCollisionPoint().DistanceTo(GlobalPosition) < 1 && (sequencer.seqNum == 5 || sequencer.seqNum == 8)) GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/interact.png");
 										else GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
 									}
 									catch
