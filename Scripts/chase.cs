@@ -16,7 +16,7 @@ public partial class chase : Node3D
 	public override void _PhysicsProcess(double delta)
 	{
 		if (sequencer.seqNum >= 11 && sequencer.seqNum <= 13) {
-			GlobalPosition = new Vector3(GlobalPosition.X + (player.GlobalPosition.X - GlobalPosition.X) / 90, GlobalPosition.Y, GlobalPosition.Z + (player.GlobalPosition.Z - GlobalPosition.Z) / 90);
+			GlobalPosition = new Vector3(GlobalPosition.X + (player.GlobalPosition.X - GlobalPosition.X) / 100, GlobalPosition.Y, GlobalPosition.Z + (player.GlobalPosition.Z - GlobalPosition.Z) / 100);
 		}
 	}
 }

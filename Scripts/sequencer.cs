@@ -6,17 +6,19 @@ using System.IO;
 public partial class sequencer : Node
 {
 	public bool nextSeq = true;
-	public int seqNum = 1;
+	public int seqNum = 0;
 	string[] subtitleArray = new string[0];
 	int time = 0;
 	subtitles subtitles;
 	informative informative;
+	credits credits;
 	public byte floors = 0;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		subtitles = GetNode<subtitles>("/root/Root/CanvasLayer/Subtitles");
 		informative = GetNode<informative>("/root/Root/CanvasLayer/Informative");
+		credits = GetNode<credits>("/root/Root/CanvasLayer/Credits");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -32,6 +34,9 @@ public partial class sequencer : Node
 			nextSeq = false;
 			switch (seqNum)
 			{
+				case 0:
+					time = 0;
+					break;
 				case 1:
 					GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_out");
 					GetNode<AnimationPlayer>("/root/Root/CharacterBody3D/PlayerAnimator").Play("anim_1");
@@ -205,7 +210,17 @@ public partial class sequencer : Node
 			}
 		}
 
-		if (seqNum == 1 && time == 149) informative.Inform("Use [WASD] to move and [SPACE] to jump");
+		if (seqNum == 0 && time == 0) credits.ChangeTo("Warning");
+		else if (seqNum == 0 && time == 199) credits.ChangeTo("This game is not made to hold your hand throughout the gameplay");
+		else if (seqNum == 0 && time == 499) credits.ChangeTo("Focus heavily on the dialogue, it'll tell you what to do");
+		else if (seqNum == 0 && time == 749) credits.ChangeTo("If you ever miss something, you can always restart using [ESC]");
+		else if (seqNum == 0 && time == 999) credits.ChangeTo("");
+		else if (seqNum == 0 && time == 1099)
+		{
+			seqNum++;
+			nextSeq = true;
+		}
+		else if (seqNum == 1 && time == 149) informative.Inform("Use [WASD] to move and [SPACE] to jump");
 		else if (seqNum == 1 && time == 399) informative.Inform("Use [E] to interact");
 		else if (seqNum == 2 && time == 540) GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
 		else if (seqNum == 2 && time == 749) GetTree().ChangeSceneToFile("res://Scenes/night.tscn");
@@ -329,7 +344,19 @@ public partial class sequencer : Node
 			GetTree().ChangeSceneToFile("res://Scenes/void.tscn");
 			seqNum++;
 		}
-		else if (seqNum == 16 && time == 3019) GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
+		else if (seqNum == 16 && time == 3019)
+		{
+			GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
+			credits = GetNode<credits>("/root/Root/CanvasLayer/Credits");
+		}
+		else if (seqNum == 16 && time == 3159) credits.ChangeTo("Developed by Denis Mašek");
+		else if (seqNum == 16 && time == 3549) credits.ChangeTo("Published by Anaglyph Games");
+		else if (seqNum == 16 && time == 3879) credits.ChangeTo("Music by Ross Bugden");
+		else if (seqNum == 16 && time == 4199) credits.ChangeTo("Models by Sketchfab");
+		else if (seqNum == 16 && time == 4499) credits.ChangeTo("Thanks for playing");
+		else if (seqNum == 16 && time == 4799) credits.ChangeTo("Support us at buymeacoffee.com/anaglyphgames");
+		else if (seqNum == 16 && time == 5099) credits.ChangeTo(" ");
+		else if (seqNum == 16 && time == 5339) GetTree().Quit();
 
 		if (seqNum == 8 && GetNode<CharacterBody3D>("/root/Root/CharacterBody3D").GlobalPosition.X < 3.97)
 		{
