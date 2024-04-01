@@ -5,6 +5,7 @@ using System.Collections;
 public partial class perspective_raycast : RayCast3D
 {
 	bool carry = false;
+	bool runtime = false;
 	Vector3 norm;
 	float mult;
 	RigidBody3D toCarry = new RigidBody3D();
@@ -12,6 +13,7 @@ public partial class perspective_raycast : RayCast3D
 	ArrayList excepted = new ArrayList();
 	bool fc = true;
 	public bool allow = true;
+	int time = 0;
 
 	sequencer sequencer;
 	// Called when the node enters the scene tree for the first time.
@@ -247,13 +249,15 @@ public partial class perspective_raycast : RayCast3D
 					if (dist < GetCollisionPoint().DistanceTo(GlobalPosition))
 					{
 						float diff = GetCollisionPoint().DistanceTo(GlobalPosition) - dist;
-						toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized() * (diff + Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
+						toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized()
+						* (diff + Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
 						shape.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
 						box.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
 					}
 					else
 					{
-						toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized() * (Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
+						toCarry.GlobalPosition = GetCollisionPoint() + (GlobalPosition - GetCollisionPoint()).Normalized()
+						* (Math.Max(box.Scale.X, Math.Max(box.Scale.Y, box.Scale.Z)) / 2);
 						shape.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
 						box.Scale = new Vector3(1f, 1f, 1f) * toCarry.GlobalPosition.DistanceTo(GlobalPosition) * mult;
 					}
@@ -378,6 +382,16 @@ public partial class perspective_raycast : RayCast3D
 		{
 			GetNode<Sprite2D>("/root/Root/CanvasLayer/Control/Crosshair").Texture = (Texture2D)GD.Load("res://Textures/dot.png");
 		}
+
+		if (runtime) time++;
+
+		if (time == 150)
+		{
+			runtime = false;
+			GetNode<sequencer>("/root/Sequencer").nextSeq = true;
+			GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_out");
+			time = 0;
+		}
 	}
 
 	public void Grab()
@@ -421,6 +435,43 @@ public partial class perspective_raycast : RayCast3D
 
 	public override void _Input(InputEvent @event)
 	{
+		if (@event is InputEventKey eventos && eventos.Keycode == Key.Escape && eventos.Pressed)
+		{
+			if (GetNode<sequencer>("/root/Sequencer").seqNum <= 2 && !runtime)
+			{
+				GetNode<sequencer>("/root/Sequencer").seqNum = 1;
+				GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
+				runtime = true;
+			}
+			else if (GetNode<sequencer>("/root/Sequencer").seqNum >= 3 && GetNode<sequencer>("/root/Sequencer").seqNum <= 9 && !runtime)
+			{
+				GetNode<sequencer>("/root/Sequencer").seqNum = 3;
+				GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
+				runtime = true;
+				GetNode<sequencer>("/root/Sequencer").floors = 0;
+				GetNode<CsgBox3D>("/root/Root/HallwayBot/Walls/Wall32").UseCollision = false;
+				GetNode<CsgBox3D>("/root/Root/Hallway/Walls/Wall50").UseCollision = false;
+				GetNode<CsgBox3D>("/root/Root/Hallway/Walls/Wall51").UseCollision = false;
+				GetNode<AnimationPlayer>("/root/Root/CapeHolder/GhostCape/GhostAnimation").Stop();
+				GetNode<Node3D>("/root/Root/CapeHolder").GlobalPosition = Vector3.Zero;
+				GetNode<Node3D>("/root/Root/CapeHolder").GlobalRotation = Vector3.Zero;
+				GetNode<music>("/root/Music").Stop();
+			}
+			else if (GetNode<sequencer>("/root/Sequencer").seqNum >= 10 && GetNode<sequencer>("/root/Sequencer").seqNum <= 14 && !runtime)
+			{
+				GetNode<sequencer>("/root/Sequencer").seqNum = 10;
+				GetNode<AnimationPlayer>("/root/Root/CanvasLayer/Fader/Fade").Play("fade_in");
+				GetNode<MeshInstance3D>("/root/Root/Hallway/Doors/DoubleDoor1").Visible = true;
+				GetNode<CsgBox3D>("/root/Root/Hallway/Doors/DoubleDoor1/CSGBox3D").UseCollision = true;
+				GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder1").GlobalRotationDegrees = new Vector3(GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder1").GlobalRotationDegrees.X, -90, GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder1").GlobalRotationDegrees.Z);
+				GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder2").GlobalRotationDegrees = new Vector3(GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder2").GlobalRotationDegrees.X, 90, GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder2").GlobalRotationDegrees.Z);
+				GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder3").GlobalRotationDegrees = new Vector3(GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder3").GlobalRotationDegrees.X, -90, GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder3").GlobalRotationDegrees.Z);
+				GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder4").GlobalRotationDegrees = new Vector3(GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder4").GlobalRotationDegrees.X, 90, GetNode<Node3D>("/root/Root/Hallway/Doors/DoorHolder4").GlobalRotationDegrees.Z);
+				runtime = true;
+				GetNode<music>("/root/Music").Stop();
+			}
+		}
+
 		if (@event is InputEventKey eventKeyboard && eventKeyboard.Keycode == Key.E && eventKeyboard.Pressed && IsColliding())
 		{
 			try

@@ -25,8 +25,10 @@ public partial class portal : CsgBox3D
 		var subViewport = GetNode<SubViewport>("SubViewport");
 		subViewport.Size = new Vector2I(GetViewport().GetWindow().Size.X / 2, GetViewport().GetWindow().Size.Y / 2);
 		camera.GlobalRotationDegrees = new Vector3(player.GlobalRotationDegrees.X, player.GlobalRotationDegrees.Y + 180, 0);
-		cameraRig.GlobalPosition = new Vector3(GlobalPosition.X - 0.1f - (player.GlobalPosition.X - GlobalPosition.X + 0.1f), player.GlobalPosition.Y, GlobalPosition.Z - (player.GlobalPosition.Z - GlobalPosition.Z) + z);
-		if (player.GlobalPosition.X /*+ 0.1*/ > cameraRig.GlobalPosition.X && player.GlobalPosition.Z < GlobalPosition.Z + Size.Z / 2 && player.GlobalPosition.Z > GlobalPosition.Z - Size.Z / 2) {
+		cameraRig.GlobalPosition = new Vector3(GlobalPosition.X - 0.1f - (player.GlobalPosition.X - GlobalPosition.X + 0.1f), 
+		player.GlobalPosition.Y, GlobalPosition.Z - (player.GlobalPosition.Z - GlobalPosition.Z) + z);
+		if (player.GlobalPosition.X /*+ 0.1*/ > cameraRig.GlobalPosition.X && player.GlobalPosition.Z < GlobalPosition.Z + 
+		Size.Z / 2 && player.GlobalPosition.Z > GlobalPosition.Z - Size.Z / 2) {
 			Vector3 tmp = cameraRig.GlobalPosition;
 			tmp.Y -= 0.5f;
 			Vector3 playerTemp = player.GlobalPosition;

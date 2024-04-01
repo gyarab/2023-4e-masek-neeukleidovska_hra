@@ -20,6 +20,8 @@ public partial class ghost : MeshInstance3D
 			runtime = true;
 			GetNode<sequencer>("/root/Sequencer").floors = 0;
 			GetNode<CsgBox3D>("/root/Root/HallwayBot/Walls/Wall32").UseCollision = false;
+			GetNode<CsgBox3D>("/root/Root/Hallway/Walls/Wall50").UseCollision = false;
+			GetNode<CsgBox3D>("/root/Root/Hallway/Walls/Wall51").UseCollision = false;
 			GetNode<AnimationPlayer>("/root/Root/CapeHolder/GhostCape/GhostAnimation").Stop();
 			GetNode<Node3D>("/root/Root/CapeHolder").GlobalPosition = Vector3.Zero;
 			GetNode<Node3D>("/root/Root/CapeHolder").GlobalRotation = Vector3.Zero;
