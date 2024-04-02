@@ -1,5 +1,6 @@
 # Mindless Paradigm
 ### A 3D puzzle-horror game with elements of non-Euclidean geometry created as an annual project in 4th grade at Gymnázium Arabská
+![Mindless Paradigm logo](/Textures/mindless.png)
 ---
 ## Installation
 ### Compiled binaries
