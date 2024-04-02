@@ -14,7 +14,7 @@ You can build the game yourself from source:
 3. Open the repository folder as a project in Godot
 4. Export the project using the Export button under the Project tab
 ---
-## Minimal system requirements
+## System requirements
 | | Minimal | Recommended |
 | ------------- | ------------- | ------------- |
 | **OS** | Windows 7 or a modern Linux distro | Windows 10 or a modern Linux distro |
